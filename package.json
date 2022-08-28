@@ -7,7 +7,7 @@
     "start": "node index.js",
     "build": "cd client && npm install && npm run build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages-d build"
+    "deploy": "gh-pages -d build"
   },
   "keywords": [],
   "author": "",
@@ -23,5 +23,6 @@
   },
   "devDependencies": {
     "gh-pages": "^4.0.0"
-  }
+  },
+  "homepage": "http://eli-blanc.github.io/beu-gaspesien"
 }

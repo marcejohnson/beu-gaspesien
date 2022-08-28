@@ -31,7 +31,7 @@ export class TableComponent extends Component {
             <div>
                 <JoueurComponent ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur3()}></JoueurComponent>
                 <Row style={{ marginTop: '30px', marginBottom: '30px' }}>
-                    <Col style={{ marginRight: '60px' }}>
+                    <Col style={{ marginRight: '120px' }}>
                         <JoueurComponent ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur2()}></JoueurComponent>
                     </Col>
                     {
@@ -41,11 +41,11 @@ export class TableComponent extends Component {
                         </Col>
                     }
 
-                    <Col style={{ marginLeft: '60px' }}>
+                    <Col style={{ marginLeft: '120px' }}>
                         <JoueurComponent ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur4()}></JoueurComponent>
                     </Col>
                 </Row>
-                <JoueurComponent ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent>
+                <div  style={{marginTop: '65px'}}> <JoueurComponent moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent></div>
             </div>
         )
     }

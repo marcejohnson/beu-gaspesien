@@ -33,22 +33,27 @@ export class TableComponent extends Component {
     render() {
         return (
             <div>
+                {/* Partenaire */}
                 <JoueurComponent ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur3()}></JoueurComponent>
+                {/* Adversaires et Quettée */}
                 <Row style={{ marginTop: '30px', marginBottom: '30px' }}>
+                    {/* Gauche */}
                     <Col style={{ marginRight: '120px' }}>
                         <JoueurComponent ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur2()}></JoueurComponent>
                     </Col>
+                    {/* Quettée */}
                     {
                         (this.state.avecQuettee) &&
                         <Col style={{ marginTop: '38px' }}>
                             <CartesComponent ouvert={this.props.ouvert} cartes={this.state.paquet.getQuettee()}></CartesComponent>
                         </Col>
                     }
-
+                    {/* Droite */}
                     <Col style={{ marginLeft: '120px' }}>
                         <JoueurComponent ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur4()}></JoueurComponent>
                     </Col>
                 </Row>
+                {/* Moi */}
                 <div style={{ marginTop: '65px' }}> <JoueurComponent moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent></div>
             </div>
         )

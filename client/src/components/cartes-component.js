@@ -11,6 +11,7 @@ export class CartesComponent extends Component {
         return (
             <div>
                 <Row gutter={6}>
+                    {/* Chaque carte */}
                     {this.props.cartes.map((item, index) => (
                         <Col>
                             <CarteComponent carte={item} ouvert={this.props.ouvert}></CarteComponent>

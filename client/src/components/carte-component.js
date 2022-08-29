@@ -20,6 +20,7 @@ export class CarteComponent extends Component {
                     }}
                     cover={
                         <div className="App-center">
+                            {/* Visible */}
                             {
                                 (this.props.ouvert) && <div>
                                     <p style={{ color: this.props.carte.couleur, fontSize: '24px', marginTop: '-5px' }}>
@@ -28,6 +29,7 @@ export class CarteComponent extends Component {
                                     <div style={{ marginTop: this.props.carte.symbole === '' ? '-10px' : '-25px' }}><img alt="oups..." className={this.props.carte.symbole === '' ? 'App-jokers' : 'App-sorte'} src={require(`../assets/images/${this.props.carte.image}`)} /></div>
                                 </div>
                             }
+                            {/* Cachée */}
                             {
                                 (!this.props.ouvert) && <div>
                                     <div className="App-center" style={{marginTop: '3px'}}><img style={{height: '65px', width: '40px'}} alt="oups..." src={require(`../assets/images/endos.png`)} /></div>

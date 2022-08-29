@@ -9,10 +9,13 @@ export class JoueurComponent extends Component {
 
         return (
             <div className="App-center">
+                {/* Nom au-dessus */}
                 {(!this.props.moi) &&
                     <p style={{ marginBottom: '0px', color: 'white', fontSize: '24px' }}>{this.props.joueur.getNom()}</p>
                 }
+                {/* Cartes */}
                 <CartesComponent ouvert={this.props.ouvert} cartes={this.props.joueur.getCartes()}></CartesComponent>
+                {/* Nom en-dessous */}
                 {(this.props.moi) &&
                     <p style={{ marginBottom: '0px', color: 'white', fontSize: '24px' }}>{this.props.joueur.getNom()}</p>
                 }

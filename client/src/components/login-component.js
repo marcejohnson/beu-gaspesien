@@ -64,6 +64,7 @@ export class LoginComponent extends Component {
                     onFinishFailed={this.onFinishFailed}
                     autoComplete="off"
                 >
+                    {/* Pseudonyme */}
                     <Form.Item
                         label={<label style={{ color: "white" }}>Pseudonyme</label>}
                         name="username"
@@ -76,7 +77,7 @@ export class LoginComponent extends Component {
                     >
                         <Input />
                     </Form.Item>
-
+                    {/* Mot de passe */}
                     <Form.Item
 
                         label={<label style={{ color: "white" }}>Mot de passe</label>}
@@ -90,7 +91,7 @@ export class LoginComponent extends Component {
                     >
                         <Input.Password style={{ color: 'white' }} />
                     </Form.Item>
-
+                    {/* Se connecter */}
                     <Form.Item
                         wrapperCol={{
                             offset: 8,

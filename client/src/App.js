@@ -52,7 +52,7 @@ class App extends Component {
   }
 
   getJoueurs() {
-      return this.tableRef.current.getJoueurs();
+    return this.tableRef.current.getJoueurs();
   }
 
   onGager = () => {
@@ -90,6 +90,7 @@ class App extends Component {
         style={{
           backgroundColor: "rgb(50,50,50)"
         }}>
+        {/* Titre */}
         <Header
           style={{
             backgroundColor: "rgb(50,50,50)"
@@ -98,9 +99,11 @@ class App extends Component {
             style={{ color: "white" }}>{this.state.titre}</h1>
         </Header>
         <Content>
+          {/* Connexté */}
           {
             (this.state.loggedIn) &&
             <div>
+              {/* Contrôles */}
               <div className="App-controls">
                 <Row gutter={6}>
                   <Col><p style={{ color: 'white' }}>Quettée </p></Col>
@@ -115,30 +118,30 @@ class App extends Component {
                   </Col>
                 </Row>
                 <Button type="primary" onClick={() => this.onBrasser()}>Brasser</Button>
-                <Button style={{marginTop: '15px'}} type="primary" onClick={() => this.onGager()}>Gager</Button>
+                <Button style={{ marginTop: '15px' }} type="primary" onClick={() => this.onGager()}>Gager</Button>
               </div>
+              {/* Table */}
               <div className="App-center" style={{ marginTop: '-60px', height: '100vh' }}>
                 <TableComponent ref={this.tableRef} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
               </div>
+              {/* Gager */}
+              <Modal styles={this.bg}
+                title="Configurer la mise"
+                visible={this.state.showGager}
+                onOk={this.onOk}
+                onCancel={this.onCancel}
+              >
+                <MiseComponent mise={this.state.mise} joueurs={this.joueurs}></MiseComponent>
+              </Modal>
             </div>
           }
+          {/* Connexion */}
           {
             (!this.state.loggedIn) &&
             <div className="App-center" style={{ height: '100vh' }}>
               <LoginComponent login={() => this.login()}></LoginComponent>
             </div>
           }
-          <Modal styles={this.bg}
-            title="Configurer la mise"
-            visible={this.state.showGager}
-            onOk={this.onOk}
-            onCancel={this.onCancel}
-          //   bodyStyle={{
-          //     backgroundColor: 'rgb(100,100,100)'
-          // }}
-          >
-          <MiseComponent mise={this.state.mise} joueurs={this.joueurs}></MiseComponent>
-          </Modal>
         </Content>
       </div>
     );

@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import "./App.css";
 
 import { TableComponent } from "./components/table-component";
-import { Layout, Col, Row, Switch, Button } from "antd";
+import { Modal, Layout, Col, Row, Switch, Button } from "antd";
 import "antd/dist/antd.css";
 import { LoginComponent } from "./components/login-component";
+import { MiseComponent } from "./components/mise-component";
+import { Mise } from "./models/mise";
 
 const { Header, Content } = Layout;
 
@@ -16,14 +18,16 @@ class App extends Component {
       avecQuettee: true,
       loggedIn: false,
       titre: '',
-      ouvert: false
+      ouvert: false,
+      showGager: false,
+      mise: new Mise()
     };
-
+    this.joueurs = [];
 
     fetch("/api")
       .then((res) => res.json())
       .then((data) => {
-        this.setState({titre: data.message});
+        this.setState({ titre: data.message });
       });
   }
 
@@ -32,9 +36,7 @@ class App extends Component {
     this.tableRef.current.brasser(this.state.avecQuettee);
   };
 
-  onJeuOuvert(checked) {
-    console.log(checked)
-    
+  onJeuOuvert() {
     this.setState(state => ({
       ouvert: !state.ouvert
     }));
@@ -42,11 +44,45 @@ class App extends Component {
 
   onBrasser() {
     this.tableRef.current.brasser(this.state.avecQuettee);
+    this.state.mise = new Mise();
   };
 
   login() {
     this.setState({ loggedIn: true });
   }
+
+  getJoueurs() {
+      return this.tableRef.current.getJoueurs();
+  }
+
+  onGager = () => {
+    this.joueurs = this.getJoueurs();
+    this.setState({
+      showGager: true,
+    });
+  }
+
+  onOk = (e) => {
+    console.log(e);
+    this.setState({
+      showGager: false,
+    });
+    const titre = this.state.mise.getStr();
+    this.setState({ titre: titre });
+  }
+
+  onCancel = (e) => {
+    console.log(e);
+    this.setState({
+      showGager: false,
+    });
+  }
+
+  bg = {
+    overlay: {
+      background: "#FFFF00"
+    }
+  };
 
   render() {
     return (
@@ -54,12 +90,12 @@ class App extends Component {
         style={{
           backgroundColor: "rgb(50,50,50)"
         }}>
-        <Header 
-        style={{
-          backgroundColor: "rgb(50,50,50)"
-        }}>
+        <Header
+          style={{
+            backgroundColor: "rgb(50,50,50)"
+          }}>
           <h1
-          style={{color: "white"}}>{this.state.titre}</h1>
+            style={{ color: "white" }}>{this.state.titre}</h1>
         </Header>
         <Content>
           {
@@ -79,8 +115,9 @@ class App extends Component {
                   </Col>
                 </Row>
                 <Button type="primary" onClick={() => this.onBrasser()}>Brasser</Button>
+                <Button style={{marginTop: '15px'}} type="primary" onClick={() => this.onGager()}>Gager</Button>
               </div>
-              <div className="App-center" style={{ height: '100vh' }}>
+              <div className="App-center" style={{ marginTop: '-60px', height: '100vh' }}>
                 <TableComponent ref={this.tableRef} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
               </div>
             </div>
@@ -91,6 +128,17 @@ class App extends Component {
               <LoginComponent login={() => this.login()}></LoginComponent>
             </div>
           }
+          <Modal styles={this.bg}
+            title="Configurer la mise"
+            visible={this.state.showGager}
+            onOk={this.onOk}
+            onCancel={this.onCancel}
+          //   bodyStyle={{
+          //     backgroundColor: 'rgb(100,100,100)'
+          // }}
+          >
+          <MiseComponent mise={this.state.mise} joueurs={this.joueurs}></MiseComponent>
+          </Modal>
         </Content>
       </div>
     );

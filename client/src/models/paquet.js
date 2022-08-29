@@ -44,6 +44,10 @@ export class Paquet {
         return this.joueur4;
     }
 
+    getJoueurs() {
+        return [this.joueur1.getNom(), this.joueur2.getNom(), this.joueur3.getNom(), this.joueur4.getNom()];
+    }
+
     getQuettee() {
         return this.quettee;
     }

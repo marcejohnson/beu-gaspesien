@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 
-import { Row, Col } from 'antd';
-
 import "antd/dist/antd.css";
 import { CartesComponent } from './cartes-component';
 
 export class JoueurComponent extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
 

@@ -26,6 +26,10 @@ export class TableComponent extends Component {
         });
     }
 
+    getJoueurs() {
+        return this.state.paquet.getJoueurs();
+    }
+
     render() {
         return (
             <div>
@@ -45,7 +49,7 @@ export class TableComponent extends Component {
                         <JoueurComponent ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur4()}></JoueurComponent>
                     </Col>
                 </Row>
-                <div  style={{marginTop: '65px'}}> <JoueurComponent moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent></div>
+                <div style={{ marginTop: '65px' }}> <JoueurComponent moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent></div>
             </div>
         )
     }

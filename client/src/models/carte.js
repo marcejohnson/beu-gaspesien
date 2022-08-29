@@ -2,9 +2,10 @@ export const Sorte = {
     COEUR: 'coeur',
     PIQUE: 'pique',
     CARREAU: 'carreau',
-    TREFLE: 'trefle',
+    TREFLE: 'trèfle',
     JOKER: 'joker',
-    BLANCHE: 'blanche'
+    BLANCHE: 'blanche',
+    SANS_ATOUT: 'sans atout'
 }
 
 const Couleur = {
@@ -51,6 +52,10 @@ export class Carte {
                 break;
             }
             case Sorte.BLANCHE: {
+                this.image = 'blanche.png';
+                break;
+            }
+            default: {
                 this.image = 'blanche.png';
                 break;
             }

@@ -4,7 +4,7 @@ import { Form, InputNumber, Select, Radio } from 'antd';
 
 import "antd/dist/antd.css";
 import { Sorte } from '../models/carte';
-import { Montant } from '../models/mise';
+import { Mise, Montant } from '../models/mise';
 
 export class MiseComponent extends Component {
     constructor(props) {

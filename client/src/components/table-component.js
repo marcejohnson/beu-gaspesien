@@ -30,6 +30,15 @@ export class TableComponent extends Component {
         return this.state.paquet.getJoueurs();
     }
 
+    onQuettee = (e) => {
+        if (e.detail === 2) {
+            if (this.props.mise !== null) {
+                this.props.titres[1] = this.state.paquet.prendreQuettee(this.props.mise);
+            }
+            this.props.refresh();
+        }
+    };
+
     render() {
         return (
             <div>
@@ -44,7 +53,7 @@ export class TableComponent extends Component {
                     {/* Quettée */}
                     {
                         (this.state.avecQuettee) &&
-                        <Col style={{ marginTop: '38px' }}>
+                        <Col style={{ marginTop: '38px' }} onClick={this.onQuettee}>
                             <CartesComponent ouvert={this.props.ouvert} cartes={this.state.paquet.getQuettee()}></CartesComponent>
                         </Col>
                     }

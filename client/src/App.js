@@ -15,19 +15,21 @@ class App extends Component {
     super(props);
     this.tableRef = React.createRef();
     this.state = {
+      change: 0,
       avecQuettee: true,
       loggedIn: false,
-      titre: '',
+      titres: ['',''],
       ouvert: false,
       showGager: false,
-      mise: new Mise()
+      mise: null
     };
     this.joueurs = [];
 
     fetch("/api")
       .then((res) => res.json())
       .then((data) => {
-        this.setState({ titre: data.message });
+        let titres = [data.message, this.state.titres[1]]
+        this.setState({ titres: titres });
       });
   }
 
@@ -56,6 +58,9 @@ class App extends Component {
   }
 
   onGager = () => {
+    this.setState({
+      mise: new Mise()
+    })
     this.joueurs = this.getJoueurs();
     this.setState({
       showGager: true,
@@ -63,18 +68,23 @@ class App extends Component {
   }
 
   onOk = (e) => {
-    console.log(e);
     this.setState({
       showGager: false,
     });
     const titre = this.state.mise.getStr();
-    this.setState({ titre: titre });
+    const sousTitre = this.tableRef.current.state.paquet.pretPourQuettee(this.state.mise) ;
+    this.setState({ titres: [titre, sousTitre] });
   }
 
   onCancel = (e) => {
-    console.log(e);
     this.setState({
       showGager: false,
+    });
+  }
+
+  onQuetteePrise = (e) => {
+    this.setState({
+      change: this.state.change++,
     });
   }
 
@@ -96,10 +106,15 @@ class App extends Component {
             backgroundColor: "rgb(50,50,50)"
           }}>
           <h1
-            style={{ color: "white" }}>{this.state.titre}</h1>
+            style={{ color: "white",marginBottom: '-20px' }}>{this.state.titres[0]}</h1>
+            {
+              (this.state.mise !== null) &&
+              <h2 
+                style={{ color: "white" }}>{this.state.titres[1]}</h2>
+            }
         </Header>
         <Content>
-          {/* Connexté */}
+          {/* Connecté */}
           {
             (this.state.loggedIn) &&
             <div>
@@ -122,7 +137,7 @@ class App extends Component {
               </div>
               {/* Table */}
               <div className="App-center" style={{ marginTop: '-60px', height: '100vh' }}>
-                <TableComponent ref={this.tableRef} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
+                <TableComponent refresh={this.onQuetteePrise} titres={this.state.titres} mise={this.state.mise} ref={this.tableRef} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
               </div>
               {/* Gager */}
               <Modal styles={this.bg}

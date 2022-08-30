@@ -19,7 +19,7 @@ export class Mise {
         if (this.montant === 150) {
             montantStr = this.petite? Montant.PETITE : Montant.GROSSE;
         }
-        let atoutStr = this.atout === Sorte.SANS_ATOUT? Sorte.SANS_ATOUT : `en ${this.atout}.`;
+        let atoutStr = this.atout === Sorte.SANS_ATOUT? Sorte.SANS_ATOUT : `en ${this.atout}`;
         return `${this.joueur} a gagé ${montantStr} ${atoutStr}.`;
     }
 }

@@ -68,4 +68,9 @@ export class Carte {
             this.points = 25;
         }
     }
+
+    copy() {
+        const carte = new Carte(this.rang, this.sorte, this.symbole);
+        return carte;
+    }
 }

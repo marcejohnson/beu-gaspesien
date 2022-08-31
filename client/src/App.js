@@ -75,7 +75,6 @@ class App extends Component {
       showGager: false,
     });
     const paquet = this.tableRef.current.state.paquet;
-    paquet.pretPourQuettee(this.state.mise);
     this.nextAction();
   }
 

@@ -18,10 +18,10 @@ export class Paquet {
             this.cartes.push(new Carte(rang, Sorte.BLANCHE, ''));
         }
 
-        this.joueur1 = new Joueur('Gilberte', 1, 'Georgette');
-        this.joueur2 = new Joueur('Xavier', 2, 'Alexis');
-        this.joueur3 = new Joueur('Georgette', 3, 'Gilberte');
-        this.joueur4 = new Joueur('Alexis', 4, 'Xavier');
+        this.joueur1 = new Joueur('Gilberte', 0, 'Georgette');
+        this.joueur2 = new Joueur('Xavier', 1, 'Alexis');
+        this.joueur3 = new Joueur('Georgette', 2, 'Gilberte');
+        this.joueur4 = new Joueur('Alexis', 3, 'Xavier');
 
         this.joueurs = [this.joueur1, this.joueur2, this.joueur3, this.joueur4];
     }
@@ -59,26 +59,25 @@ export class Paquet {
     }
 
     prendreQuettee(mise) {
-        const joueur = this.getJoueur(mise.joueur);
+        const joueur = this.getJoueurParNom(mise.joueur);
         if (joueur !== null) {
-            joueur.cartes.push(this.quettee[0].copy());
-            joueur.cartes.push(this.quettee[1].copy());
+            const carte1 = this.quettee[0].copy();
+            const carte2 = this.quettee[1].copy();
+            carte1.surelevee = true;
+            carte2.surelevee = true;
+            joueur.cartes.push(carte1);
+            joueur.cartes.push(carte2);
             joueur.cartes.sort((a, b) => a.rang - b.rang);
             this.quettee = [];
         }
     }
 
-    getJoueur(nom) {
+    getJoueurParNom(nom) {
         return this.joueurs.find((item) => item.getNom() === nom);
     }
 
-    pretPourQuettee(mise) {
-        const joueur = this.getJoueur(mise.joueur);
-        if (joueur !== null) {
-            const action = `${joueur.getNom()}, tu peux prendre la quettée`;
-            return action;
-        }
-        return '';
+    getJoueurParIdx(idx) {
+        return this.joueurs.find((item) => item.getIndex() === idx);
     }
 
     brasser() {
@@ -101,8 +100,10 @@ export class Paquet {
     discarte(carte, joueur, final) {
         if (joueur !== null) {
             if (!final) {
-                const partenaire = this.getJoueur(joueur.partenaire);
-                partenaire.cartes.push(carte.copy());
+                const partenaire = this.getJoueurParNom(joueur.partenaire);
+                const copie = carte.copy();
+                copie.surelevee = true;
+                partenaire.cartes.push(copie);
                 partenaire.cartes.sort((a, b) => a.rang - b.rang);
             }
             const idx = joueur.cartes.findIndex((item) => item.key === carte.key);

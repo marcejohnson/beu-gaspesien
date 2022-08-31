@@ -22,7 +22,7 @@ export class CartesComponent extends Component {
                 <Row gutter={6}>
                     {/* Chaque carte */}
                     {this.props.cartes.map((item, index) => (
-                        <Col onClick={e => this.onClick(e, item)}>
+                        <Col onClick={e => this.onClick(e, item)} style={{marginTop: item.surelevee && this.props.clickable? '-10px' : '0px'}}>
                             <CarteComponent carte={item} ouvert={this.props.ouvert}></CarteComponent>
                         </Col>
                     ))}

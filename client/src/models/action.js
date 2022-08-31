@@ -60,7 +60,7 @@ export class Action {
                 } else {
                     action.type = ActionType.JOUER;
                 }
-                action.joueur = paquet.getJoueur(mise.joueur);
+                action.joueur = paquet.getJoueurParNom(mise.joueur);
                 break;
             }
             case ActionType.QUETTEE: {
@@ -74,7 +74,7 @@ export class Action {
                 } else {
                     action.cptCarte = 0;
                     action.type = ActionType.DISCARTER;
-                    action.joueur = paquet.getJoueur(this.joueur.getPartenaire());
+                    action.joueur = paquet.getJoueurParNom(this.joueur.getPartenaire());
                 }
                 break;
             }
@@ -84,7 +84,16 @@ export class Action {
                 } else {
                     action.cptCarte = 0;
                     action.type = ActionType.JOUER;
-                    action.joueur = paquet.getJoueur(mise.joueur);
+                    debugger
+                    const miseur = paquet.getJoueurParNom(mise.joueur);
+                    let idx = miseur.getIndex() + 1;
+                    if (idx >= 4) {
+                        idx = 0;
+                    }
+                    action.joueur = paquet.getJoueurParIdx(idx);
+                    for (let carte of action.joueur.getCartes()) {
+                        carte.surelevee = false;
+                    }
                 }
                 break;
             }
@@ -98,7 +107,7 @@ export class Action {
                 } else if (action.cptJoueur === 4) {
                     action.cptCarte++;
                     action.cptJoueur = 0;
-                    action.joueur = this.paquet.getJoueur(remporteur);
+                    action.joueur = this.paquet.getJoueurParNom(remporteur);
                 }
                 break;
             }

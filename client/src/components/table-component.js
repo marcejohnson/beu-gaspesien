@@ -55,12 +55,12 @@ export class TableComponent extends Component {
         return (
             <div>
                 {/* Partenaire */}
-                <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} actif={this.isJoueurActif(3)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur3()}></JoueurComponent>
+                <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} actif={this.isJoueurActif(2)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur3()}></JoueurComponent>
                 {/* Adversaires et Quettée */}
                 <Row style={{ marginTop: '30px', marginBottom: '30px' }}>
                     {/* Gauche */}
                     <Col style={{ marginRight: '120px' }}>
-                        <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} actif={this.isJoueurActif(2)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur2()}></JoueurComponent>
+                        <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} actif={this.isJoueurActif(1)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur2()}></JoueurComponent>
                     </Col>
                     {/* Quettée */}
                     {
@@ -71,12 +71,12 @@ export class TableComponent extends Component {
                     }
                     {/* Droite */}
                     <Col style={{ marginLeft: '120px' }}>
-                        <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} actif={this.isJoueurActif(4)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur4()}></JoueurComponent>
+                        <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} actif={this.isJoueurActif(3)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur4()}></JoueurComponent>
                     </Col>
                 </Row>
                 {/* Moi */}
                 <div style={{ marginTop: '65px' }}>
-                    <JoueurComponent discarte={(carte) => this.onDiscarte(carte)}actif={this.isJoueurActif(1)} moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent>
+                    <JoueurComponent discarte={(carte) => this.onDiscarte(carte)}actif={this.isJoueurActif(0)} moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent>
                 </div>
             </div>
         )

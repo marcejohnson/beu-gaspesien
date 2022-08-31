@@ -30,6 +30,7 @@ export class Carte {
         this.key = `${symbole}|${sorte}`;
         this.sorte = sorte;
         this.symbole = symbole;
+        this.surelevee = false;
         switch (this.sorte) {
             case Sorte.COEUR: {
                 this.image = 'coeur.png';

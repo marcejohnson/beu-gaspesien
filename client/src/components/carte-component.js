@@ -5,10 +5,7 @@ import { Card } from 'antd';
 import "antd/dist/antd.css";
 
 export class CarteComponent extends Component {
-    constructor(props) {
-        super(props);
-    }
-
+    
     render() {
         return (
             <div>

@@ -5,6 +5,10 @@ import { CartesComponent } from './cartes-component';
 
 export class JoueurComponent extends Component {
 
+    onDiscarte(carte) {
+        this.props.discarte(carte);
+    }
+
     render() {
 
         return (
@@ -14,7 +18,7 @@ export class JoueurComponent extends Component {
                     <p style={{ marginBottom: '0px', color: 'white', fontSize: '24px' }}>{this.props.joueur.getNom()}</p>
                 }
                 {/* Cartes */}
-                <CartesComponent ouvert={this.props.ouvert} cartes={this.props.joueur.getCartes()}></CartesComponent>
+                <CartesComponent discarte={(carte) => this.onDiscarte(carte)} clickable={this.props.actif} ouvert={this.props.ouvert} cartes={this.props.joueur.getCartes()}></CartesComponent>
                 {/* Nom en-dessous */}
                 {(this.props.moi) &&
                     <p style={{ marginBottom: '0px', color: 'white', fontSize: '24px' }}>{this.props.joueur.getNom()}</p>

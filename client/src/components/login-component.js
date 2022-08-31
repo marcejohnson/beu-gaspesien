@@ -7,10 +7,6 @@ import bcrypt from 'bcryptjs';
 
 export class LoginComponent extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     onFinish = (credentials) => {
         const username = credentials.username;
         const password = credentials.password;

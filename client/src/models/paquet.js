@@ -61,15 +61,11 @@ export class Paquet {
     prendreQuettee(mise) {
         const joueur = this.getJoueur(mise.joueur);
         if (joueur !== null) {
-            debugger
             joueur.cartes.push(this.quettee[0].copy());
             joueur.cartes.push(this.quettee[1].copy());
             joueur.cartes.sort((a, b) => a.rang - b.rang);
             this.quettee = [];
-            const action = `${joueur.getNom()}, tu peux discarter.`;
-            return action;
         }
-        return '';
     }
 
     getJoueur(nom) {
@@ -99,6 +95,18 @@ export class Paquet {
 
         if (this.quettee !== null) {
             this.quettee = this.cartes.slice(32, 34).sort((a, b) => a.rang - b.rang);
+        }
+    }
+
+    discarte(carte, joueur, final) {
+        if (joueur !== null) {
+            if (!final) {
+                const partenaire = this.getJoueur(joueur.partenaire);
+                partenaire.cartes.push(carte.copy());
+                partenaire.cartes.sort((a, b) => a.rang - b.rang);
+            }
+            const idx = joueur.cartes.findIndex((item) => item.key === carte.key);
+            joueur.cartes.splice(idx, 1);
         }
     }
 }

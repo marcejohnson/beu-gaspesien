@@ -7,6 +7,7 @@ import "antd/dist/antd.css";
 import { LoginComponent } from "./components/login-component";
 import { MiseComponent } from "./components/mise-component";
 import { Mise } from "./models/mise";
+import { Action } from "./models/action";
 
 const { Header, Content } = Layout;
 
@@ -15,10 +16,10 @@ class App extends Component {
     super(props);
     this.tableRef = React.createRef();
     this.state = {
-      change: 0,
+      action: new Action(),
       avecQuettee: true,
       loggedIn: false,
-      titres: ['',''],
+      titre: '',
       ouvert: false,
       showGager: false,
       mise: null
@@ -28,8 +29,7 @@ class App extends Component {
     fetch("/api")
       .then((res) => res.json())
       .then((data) => {
-        let titres = [data.message, this.state.titres[1]]
-        this.setState({ titres: titres });
+        this.state.titre = data.message;
       });
   }
 
@@ -47,6 +47,9 @@ class App extends Component {
   onBrasser() {
     this.tableRef.current.brasser(this.state.avecQuettee);
     this.state.mise = new Mise();
+    this.setState({
+      action: new Action()
+    })
   };
 
   login() {
@@ -71,9 +74,9 @@ class App extends Component {
     this.setState({
       showGager: false,
     });
-    const titre = this.state.mise.getStr();
-    const sousTitre = this.tableRef.current.state.paquet.pretPourQuettee(this.state.mise) ;
-    this.setState({ titres: [titre, sousTitre] });
+    const paquet = this.tableRef.current.state.paquet;
+    paquet.pretPourQuettee(this.state.mise);
+    this.nextAction();
   }
 
   onCancel = (e) => {
@@ -82,10 +85,15 @@ class App extends Component {
     });
   }
 
-  onQuetteePrise = (e) => {
+  nextAction() {
+    const paquet = this.tableRef.current.state.paquet;
     this.setState({
-      change: this.state.change++,
+      action: this.state.action.next(this.state.mise, this.state.avecQuettee, paquet, null)
     });
+  }
+
+  onNextAction = (e) => {
+    this.nextAction();
   }
 
   bg = {
@@ -105,19 +113,18 @@ class App extends Component {
           style={{
             backgroundColor: "rgb(50,50,50)"
           }}>
-          <h1
-            style={{ color: "white",marginBottom: '-20px' }}>{this.state.titres[0]}</h1>
-            {
-              (this.state.mise !== null) &&
-              <h2 
-                style={{ color: "white" }}>{this.state.titres[1]}</h2>
-            }
+          <h1 style={{ color: "white", marginBottom: '-20px' }}>{this.state.titre}</h1> 
+          {
+            (this.state.loggedIn) &&             
+              <h2 style={{ color: "white" }}>{this.state.action.getMsg()}</h2>
+          }
         </Header>
         <Content>
           {/* Connecté */}
           {
             (this.state.loggedIn) &&
             <div>
+                        
               {/* Contrôles */}
               <div className="App-controls">
                 <Row gutter={6}>
@@ -137,7 +144,7 @@ class App extends Component {
               </div>
               {/* Table */}
               <div className="App-center" style={{ marginTop: '-60px', height: '100vh' }}>
-                <TableComponent refresh={this.onQuetteePrise} titres={this.state.titres} mise={this.state.mise} ref={this.tableRef} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
+                <TableComponent action={this.state.action} joueurActif={this.state.action.joueur} nextAction={this.onNextAction} mise={this.state.mise} ref={this.tableRef} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
               </div>
               {/* Gager */}
               <Modal styles={this.bg}

@@ -4,6 +4,7 @@ export class Joueur {
         this.nom = nom;
         this.index = index;
         this.partenaire = partenaire;
+        this.actif = false;
     }
 
     getNom() {

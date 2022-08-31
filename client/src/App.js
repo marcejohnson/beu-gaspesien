@@ -149,7 +149,7 @@ class App extends Component {
               </div>
               {/* Table */}
               <div className="App-center" style={{ marginTop: '-60px', height: '100vh' }}>
-                <TableComponent action={this.state.action} joueurActif={this.state.action.joueur} nextAction={this.onNextAction} mise={this.state.mise} ref={this.tableRef} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
+                <TableComponent action={this.state.action} nextAction={this.onNextAction} mise={this.state.mise} ref={this.tableRef} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
               </div>
               {/* Gager */}
               <Modal styles={this.bg}

@@ -84,7 +84,6 @@ export class Action {
                 } else {
                     action.cptCarte = 0;
                     action.type = ActionType.JOUER;
-                    debugger
                     const miseur = paquet.getJoueurParNom(mise.joueur);
                     let idx = miseur.getIndex() + 1;
                     if (idx >= 4) {
@@ -114,6 +113,7 @@ export class Action {
             default: {
             }
         }
+        paquet.setJoueurActif(action.joueur);
         return action;
     }
 }

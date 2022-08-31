@@ -26,6 +26,16 @@ export class Paquet {
         this.joueurs = [this.joueur1, this.joueur2, this.joueur3, this.joueur4];
     }
 
+    setJoueurActif(joueurActif) {
+        for (let joueur of this.joueurs) {
+            if (joueur.getNom() === joueurActif.getNom()) {
+                joueur.actif = true;
+            } else {
+                joueur.actif = false;
+            }
+        }
+    }
+
     getCartes() {
         return this.cartes;
     }

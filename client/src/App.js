@@ -29,7 +29,9 @@ class App extends Component {
     fetch("/api")
       .then((res) => res.json())
       .then((data) => {
-        this.state.titre = data.message;
+        this.setState({
+          titre: data.message
+        })
       });
   }
 
@@ -74,6 +76,10 @@ class App extends Component {
     this.setState({
       showGager: false,
     });
+    const titre = this.state.mise.getStr();
+    this.setState({
+      titre: titre
+    })
     const paquet = this.tableRef.current.state.paquet;
     this.nextAction();
   }

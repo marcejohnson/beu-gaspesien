@@ -50,9 +50,9 @@ export class TableComponent extends Component {
         return (
             <div>
                 {/* Partenaire */}
-                <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur3()}></JoueurComponent>
+                <div style={{marginBottom: '60px'}}><JoueurComponent discarte={(carte) => this.onDiscarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur3()}></JoueurComponent></div>
                 {/* Adversaires et Quettée */}
-                <Row style={{ marginTop: '30px', marginBottom: '30px' }}>
+                <Row style={{ marginTop: '0px', marginBottom: '30px' }}>
                     {/* Gauche */}
                     <Col style={{ marginRight: '120px' }}>
                         <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur2()}></JoueurComponent>
@@ -70,7 +70,7 @@ export class TableComponent extends Component {
                     </Col>
                 </Row>
                 {/* Moi */}
-                <div style={{ marginTop: '65px' }}>
+                <div style={{ marginTop: '105px' }}>
                     <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent>
                 </div>
             </div>

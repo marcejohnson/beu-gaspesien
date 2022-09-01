@@ -24,6 +24,13 @@ export class Paquet {
         this.joueur4 = new Joueur('Alexis', 3, 'Xavier');
 
         this.joueurs = [this.joueur1, this.joueur2, this.joueur3, this.joueur4];
+
+        this.carte1 = null;
+        this.carte2 = null;
+        this.carte3 = null;
+        this.carte4 = null;
+
+        this.pile = [];
     }
 
     setJoueurActif(joueurActif) {
@@ -60,12 +67,16 @@ export class Paquet {
         return this.joueurs.map((item) => item.getNom());
     }
 
-    findJoueur(nom) {
-        return this.joueurs.find((item) => item.getNom() === nom);
-    }
-
     getQuettee() {
         return this.quettee;
+    }
+
+    nextJoueur(joueur) {
+        let idx = joueur.getIndex() + 1;
+        if (idx >= 4) {
+            idx = 0;
+        }
+        return this.getJoueurParIdx(idx);
     }
 
     prendreQuettee(mise) {

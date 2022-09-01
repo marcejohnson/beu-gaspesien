@@ -1,16 +1,16 @@
 export const ActionType = {
     GAGER: 0,
-    QUETTEE: 1,
-    PASSER: 2,
-    DISCARTER: 3,
-    JOUER: 4,
-    BRASSER: 5
+    PASSER: 1,
+    DISCARTER: 2,
+    JOUER: 3,
+    BRASSER: 4
 }
 
 export class Action {
-    constructor() {
+    constructor(brasseur) {
         this.type = ActionType.GAGER;
         this.joueur = null;
+        this.brasseur = brasseur;
         this.cptCarte = 0;
         this.cptJoueur = 0;
     }
@@ -20,26 +20,22 @@ export class Action {
             case ActionType.GAGER: {
                 return `C'est le temps de gager!`;
             }
-            case ActionType.QUETTEE: {
-                return `${this.joueur.getNom()}, c'est le temps de prendre la quettée!`;
-            }
             case ActionType.PASSER: {
-                return `${this.joueur.getNom()}, c'est le temps de discarter!`;
+                return `${this.joueur.getNom()}, c'est à toi à discarter!`;
             }
             case ActionType.DISCARTER: {
-                return `${this.joueur.getNom()}, c'est le temps de discarter!`;
+                return `${this.joueur.getNom()}, c'est à toi à discarter!`;
             }
             case ActionType.JOUER: {                
-                return `${this.joueur.getNom()}, c'est le temps de jouer!`;
+                return `${this.joueur.getNom()}, c'est à toi à jouer!`;
             }
             case ActionType.BRASSER: {
-                return `C'est le temps de brasser!`;
+                return `${this.joueur.getNom()}, c'est à toi à brasser!`;
             }
             default: {
                 return '';
             }
         }
-
     }
 
     copy() {
@@ -56,16 +52,13 @@ export class Action {
         switch (this.type) {
             case ActionType.GAGER: {
                 if (avecQuettee) {
-                    action.type = ActionType.QUETTEE;
+                    paquet.prendreQuettee(mise);
+                    action.type = ActionType.PASSER;
+                    action.cptCarte = 0;
                 } else {
                     action.type = ActionType.JOUER;
                 }
                 action.joueur = paquet.getJoueurParNom(mise.joueur);
-                break;
-            }
-            case ActionType.QUETTEE: {
-                action.type = ActionType.PASSER;
-                action.cptCarte = 0;
                 break;
             }
             case ActionType.PASSER: {
@@ -85,11 +78,7 @@ export class Action {
                     action.cptCarte = 0;
                     action.type = ActionType.JOUER;
                     const miseur = paquet.getJoueurParNom(mise.joueur);
-                    let idx = miseur.getIndex() + 1;
-                    if (idx >= 4) {
-                        idx = 0;
-                    }
-                    action.joueur = paquet.getJoueurParIdx(idx);
+                    action.joueur = paquet.nextJoueur(miseur);
                     for (let carte of action.joueur.getCartes()) {
                         carte.surelevee = false;
                     }
@@ -102,6 +91,7 @@ export class Action {
                     action.cptCarte = 0;
                     action.cptJoueur = 0;
                     action.type = ActionType.BRASSER;
+                    action.brasseur = paquet.nextJoueur(action.brasseur);
                     action.joueur = null;
                 } else if (action.cptJoueur === 4) {
                     action.cptCarte++;

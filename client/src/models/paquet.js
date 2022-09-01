@@ -25,10 +25,10 @@ export class Paquet {
 
         this.joueurs = [this.joueur1, this.joueur2, this.joueur3, this.joueur4];
 
-        this.carte1 = null;
-        this.carte2 = null;
-        this.carte3 = null;
-        this.carte4 = null;
+        this.carte1 = new Carte();
+        this.carte2 = new Carte();
+        this.carte3 = new Carte();
+        this.carte4 = new Carte();
 
         this.pile = [];
     }

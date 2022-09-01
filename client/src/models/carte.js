@@ -25,7 +25,7 @@ export const Symbole = {
 }
 
 export class Carte {
-    constructor(rang, sorte, symbole) {
+    constructor(rang = -1, sorte = '', symbole = '') {
         this.rang = rang;
         this.key = `${symbole}|${sorte}`;
         this.sorte = sorte;

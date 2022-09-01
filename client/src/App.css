@@ -56,19 +56,6 @@
   margin-bottom: '0px';
 }
 
-.App-actif {  
-  color: rgb(32, 166, 227);
-  font-weight: 75px;
-  margin-bottom: '0px';
-  font-size: '30px'; 
-}
-
-.App-inactif {
-  font-size: '50px' !important;
-  color: red;
-  margin-bottom: '-100px'; 
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

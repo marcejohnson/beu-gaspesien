@@ -7,6 +7,7 @@ import { CartesComponent } from './cartes-component';
 import { JoueurComponent } from './joueur-component';
 import { Paquet } from '../models/paquet';
 import { ActionType } from '../models/action';
+import { MainComponent } from './main-component';
 
 export class TableComponent extends Component {
     constructor(props) {
@@ -59,9 +60,16 @@ export class TableComponent extends Component {
                     </Col>
                     {/* Quettée */}
                     {
-                        (this.state.avecQuettee) &&
+                        (this.state.avecQuettee && this.props.action.type === ActionType.GAGER) &&
                         <Col style={{ marginTop: '38px' }} onClick={this.onQuettee}>
                             <CartesComponent clickable={false} ouvert={this.props.ouvert} cartes={this.state.paquet.getQuettee()}></CartesComponent>
+                        </Col>
+                    }
+                    {/* Main */}
+                    {
+                        (this.props.action.type === ActionType.JOUER) &&
+                        <Col>
+                            <MainComponent paquet={this.state.paquet} ouvert={this.props.ouvert}></MainComponent>
                         </Col>
                     }
                     {/* Droite */}
@@ -71,7 +79,7 @@ export class TableComponent extends Component {
                 </Row>
                 {/* Moi */}
                 <div style={{ marginTop: '105px' }}>
-                    <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent>
+                    <JoueurComponent aria-hidden="true" discarte={(carte) => this.onDiscarte(carte)} moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent>
                 </div>
             </div>
         )

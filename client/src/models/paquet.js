@@ -31,6 +31,8 @@ export class Paquet {
         this.clearMain();
 
         this.pile = [];
+
+        this.attendre = false;
     }
 
     setJoueurActif(joueurActif) {
@@ -162,7 +164,7 @@ export class Paquet {
             } else if (carte.sorte === this.sorteDemandee && carteGagnante.sorte !== this.sorteDemandee && !carteGagnante.isAtout(mise.atout)) {
                 carteGagnante = carte;                
                 remporteur = this.getJoueurParIdx(i);
-            } else if (carte.sorte === carteGagnante.sorte || carte.isAtout(mise.atout) && carteGagnante.isAtout(mise.atout)) {
+            } else if (carte.sorte === carteGagnante.sorte || (carte.isAtout(mise.atout) && carteGagnante.isAtout(mise.atout))) {
                 if (mise.petite) {
                     if (carte.rang < carteGagnante.rang) {
                         carteGagnante = carte;                        

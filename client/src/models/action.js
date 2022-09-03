@@ -8,10 +8,9 @@ export const ActionType = {
 }
 
 export class Action {
-    constructor(brasseur) {
+    constructor() {
         this.type = ActionType.GAGER;
         this.joueur = null;
-        this.brasseur = brasseur;
         this.remporteur = null;
         this.cptCarte = 0;
         this.cptJoueur = 0;
@@ -115,12 +114,15 @@ export class Action {
                     action.cptCarte = 0;
                     action.cptJoueur = 0;
                     action.type = ActionType.BRASSER;
-                    action.brasseur = paquet.getNextJoueur(action.brasseur);
-                    action.joueur = action.remporteur.copy();
+                    action.joueur = paquet.joueur1;
                     action.remporteur = null;
                 } else {
                     action.type = ActionType.JOUER;
                 }
+                break;
+            }
+            case ActionType.BRASSER: {                
+                action.type = ActionType.BRASSER;
                 break;
             }
             default: {

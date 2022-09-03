@@ -25,6 +25,7 @@ class App extends Component {
       mise: null
     };
     this.joueurs = [];
+    this.attendre = false;
 
     fetch("/api")
       .then((res) => res.json())
@@ -97,8 +98,10 @@ class App extends Component {
       action: action
     });
     if (action.type === ActionType.REMPORTER) {
+      paquet.attendre = true;
       setTimeout(() => {
         this.nextAction();
+        paquet.attendre = false;
       }, 3000);
     }
   }

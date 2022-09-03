@@ -43,8 +43,8 @@ export class TableComponent extends Component {
         }
     };
 
-    onCliqueCarte(carte) {   
-        if (this.props.action === ActionType.REMPORTER) {
+    onCliqueCarte(carte) { 
+        if (this.state.paquet.attendre) {
             return;
         }
         this.state.paquet.cliqueCarte(carte, this.props.action.joueur, this.props.action);

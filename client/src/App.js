@@ -7,7 +7,7 @@ import "antd/dist/antd.css";
 import { LoginComponent } from "./components/login-component";
 import { MiseComponent } from "./components/mise-component";
 import { Mise } from "./models/mise";
-import { Action } from "./models/action";
+import { Action, ActionType } from "./models/action";
 
 const { Header, Content } = Layout;
 
@@ -98,6 +98,14 @@ class App extends Component {
     });
   }
 
+  getSousTitre() {
+    let sousTitre = this.state.action.getMsg();
+    if (this.state.action.type === ActionType.JOUER && this.tableRef.current.state.paquet.sorteDemandee) {
+      sousTitre = `${sousTitre} (${this.tableRef.current.state.paquet.sorteDemandee} demandé)`
+    }
+    return sousTitre;
+  }
+
   onNextAction = (e) => {
     this.nextAction();
   }
@@ -119,10 +127,11 @@ class App extends Component {
           style={{
             backgroundColor: "rgb(50,50,50)"
           }}>
-          <h1 style={{ color: "white", marginBottom: '-20px' }}>{this.state.titre}</h1> 
+          <h1 style={{ color: "white", marginBottom: '-20px' }}>{this.state.titre}</h1>
           {
-            (this.state.loggedIn) &&             
-              <h2 style={{ color: "white" }}>{this.state.action.getMsg()}</h2>
+            // Sous-titre
+            (this.state.loggedIn) &&
+              <h2 style={{ color: "rgb(32,166,237)" }}>{this.getSousTitre()}</h2>
           }
         </Header>
         <Content>
@@ -130,7 +139,7 @@ class App extends Component {
           {
             (this.state.loggedIn) &&
             <div>
-                        
+
               {/* Contrôles */}
               <div className="App-controls">
                 <Row gutter={6}>

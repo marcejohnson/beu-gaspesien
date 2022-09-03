@@ -77,6 +77,7 @@ export class Action {
                 } else {
                     action.cptCarte = 0;
                     action.type = ActionType.JOUER;
+                    paquet.sorteDemandee = null;
                     const miseur = paquet.getJoueurParNom(mise.joueur);
                     // Clear quettee pour miseur
                     for (let carte of miseur.cartes) {

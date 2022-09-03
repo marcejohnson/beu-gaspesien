@@ -81,6 +81,7 @@ export class Paquet {
 
     clearMain() {
         this.main = [new Carte(),new Carte(),new Carte(),new Carte()];
+        this.sorteDemandee = null;
     }
 
     prendreQuettee(mise) {

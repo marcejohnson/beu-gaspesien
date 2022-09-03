@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
-import { Row, Col } from 'antd';
-
+import { Row, Col, message } from 'antd';
 import "antd/dist/antd.css";
 import { CartesComponent } from './cartes-component';
 import { JoueurComponent } from './joueur-component';
@@ -18,6 +16,8 @@ export class TableComponent extends Component {
             avecQuettee: props.avecQuettee
         }
         this.state.paquet.brasser();
+
+        this.cartesAtout = 0;
     }
 
     brasser(avecQuettee) {
@@ -43,7 +43,7 @@ export class TableComponent extends Component {
         }
     };
 
-    onCliqueCarte(carte) { 
+    onCliqueCarte(carte) {
         if (this.state.paquet.attendre) {
             return;
         }
@@ -54,14 +54,28 @@ export class TableComponent extends Component {
                 this.state.paquet.sorteDemandee = this.props.mise.atout;
             }
         }
+
+        if (this.props.action.type === ActionType.DISCARTER && carte.isAtout(this.props.mise.atout)) {
+            this.cartesAtout++;
+        } else if (this.props.action.cptCarte === 1) {
+            if (this.cartesAtout > 0) {
+                this.onDiscarterAtout();
+            }
+            this.cartesAtout = 0;
+        }
         this.props.nextAction();
     }
+
+    onDiscarterAtout = () => {
+        const nCartes = this.cartesAtout === 1 ? '1 carte' : '2 cartes';
+        message.info(`${this.props.action.joueur.getNom()} a discarter ${nCartes} d'atout.`);
+    };
 
     render() {
         return (
             <div>
                 {/* Partenaire */}
-                <div style={{marginBottom: '60px'}}>
+                <div style={{ marginBottom: '60px' }}>
                     <JoueurComponent sorteDemandee={this.state.paquet.sorteDemandee} action={this.props.action} cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur3()}></JoueurComponent>
                 </div>
                 {/* Adversaires et Quettée */}

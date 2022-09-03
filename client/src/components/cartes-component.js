@@ -12,7 +12,7 @@ export class CartesComponent extends Component {
 
     onClick = (e,carte) => {;
         if (e.detail === 2 && this.props.actif) {  
-            this.props.discarte(carte);
+            this.props.cliqueCarte(carte);
         }
     };
 

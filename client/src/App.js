@@ -18,9 +18,9 @@ class App extends Component {
     this.state = {
       action: new Action(),
       avecQuettee: true,
-      loggedIn: false,
+      loggedIn: true,
       titre: '',
-      ouvert: false,
+      ouvert: true,
       showGager: false,
       mise: null
     };
@@ -92,8 +92,9 @@ class App extends Component {
 
   nextAction() {
     const paquet = this.tableRef.current.state.paquet;
+    const action = this.state.action.next(this.state.mise, this.state.avecQuettee, paquet, null);
     this.setState({
-      action: this.state.action.next(this.state.mise, this.state.avecQuettee, paquet, null)
+      action: action
     });
   }
 

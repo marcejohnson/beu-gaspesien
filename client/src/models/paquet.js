@@ -1,3 +1,4 @@
+import { ActionType } from "./action";
 import { Carte, Sorte, Symbole } from "./carte";
 import { Joueur } from "./joueur";
 
@@ -25,10 +26,9 @@ export class Paquet {
 
         this.joueurs = [this.joueur1, this.joueur2, this.joueur3, this.joueur4];
 
-        this.carte1 = new Carte();
-        this.carte2 = new Carte();
-        this.carte3 = new Carte();
-        this.carte4 = new Carte();
+        this.sorteDemandee = null;
+
+        this.clearMain();
 
         this.pile = [];
     }
@@ -71,12 +71,16 @@ export class Paquet {
         return this.quettee;
     }
 
-    nextJoueur(joueur) {
+    getNextJoueur(joueur) {
         let idx = joueur.getIndex() + 1;
         if (idx >= 4) {
             idx = 0;
         }
         return this.getJoueurParIdx(idx);
+    }
+
+    clearMain() {
+        this.main = [new Carte(),new Carte(),new Carte(),new Carte()];
     }
 
     prendreQuettee(mise) {
@@ -118,17 +122,59 @@ export class Paquet {
         }
     }
 
-    discarte(carte, joueur, final) {
+    cliqueCarte(carte, joueur, action) {
         if (joueur !== null) {
-            if (!final) {
-                const partenaire = this.getJoueurParNom(joueur.partenaire);
-                const copie = carte.copy();
-                copie.surelevee = true;
-                partenaire.cartes.push(copie);
-                partenaire.cartes.sort((a, b) => a.rang - b.rang);
+            switch (action.type) {
+                case ActionType.PASSER: {
+                    const partenaire = this.getJoueurParNom(joueur.partenaire);
+                    const copie = carte.copy();
+                    copie.surelevee = true;
+                    partenaire.cartes.push(copie);
+                    partenaire.cartes.sort((a, b) => a.rang - b.rang);
+                    const idx = joueur.cartes.findIndex((item) => item.key === carte.key);
+                    joueur.cartes.splice(idx, 1);
+                    break;
+                }
+                case ActionType.DISCARTER: {
+                    const idx = joueur.cartes.findIndex((item) => item.key === carte.key);
+                    joueur.cartes.splice(idx, 1);
+                    break;
+                }
+                case ActionType.JOUER: {
+                    const joueurIdx = action.joueur.getIndex();
+                    this.main[joueurIdx] = carte.copy();
+                    const idx = joueur.cartes.findIndex((item) => item.key === carte.key);
+                    joueur.cartes.splice(idx, 1);
+                }
             }
-            const idx = joueur.cartes.findIndex((item) => item.key === carte.key);
-            joueur.cartes.splice(idx, 1);
         }
+    }
+
+    getRemporteur(mise) {
+        let carteGagnante = this.main[0];
+        let remporteur = this.joueur1;
+        for (let i = 1; i < 4; ++i) {
+            let carte = this.main[i];
+            if (carte.isAtout(mise.atout) && !carteGagnante.isAtout(mise.atout)) {
+                carteGagnante = carte;
+                remporteur = this.getJoueurParIdx(i);
+            } else if (carte.sorte === this.sorteDemandee && carteGagnante.sorte !== this.sorteDemandee && !carteGagnante.isAtout(mise.atout)) {
+                carteGagnante = carte;                
+                remporteur = this.getJoueurParIdx(i);
+            } else if (carte.sorte === carteGagnante.sorte || carte.isAtout(mise.atout) && carteGagnante.isAtout(mise.atout)) {
+                if (mise.petite) {
+                    if (carte.rang < carteGagnante.rang) {
+                        carteGagnante = carte;                        
+                        remporteur = this.getJoueurParIdx(i);
+                    }
+                } else {
+                    if (carte.rang > carteGagnante.rang) {
+                        carteGagnante = carte;
+                        remporteur = this.getJoueurParIdx(i);
+                    }
+                }
+            }
+        }
+        return remporteur;
     }
 }

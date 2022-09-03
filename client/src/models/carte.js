@@ -74,4 +74,11 @@ export class Carte {
         const carte = new Carte(this.rang, this.sorte, this.symbole);
         return carte;
     }
+
+    isAtout(atout) {
+        if (atout === Sorte.SANS_ATOUT) {
+            return false;
+        }
+        return this.sorte === Sorte.BLANCHE || this.sorte === Sorte.JOKER || this.sorte === atout;
+    }
 }

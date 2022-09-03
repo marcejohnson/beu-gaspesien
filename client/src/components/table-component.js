@@ -8,6 +8,7 @@ import { JoueurComponent } from './joueur-component';
 import { Paquet } from '../models/paquet';
 import { ActionType } from '../models/action';
 import { MainComponent } from './main-component';
+import { Sorte } from '../models/carte';
 
 export class TableComponent extends Component {
     constructor(props) {
@@ -42,8 +43,14 @@ export class TableComponent extends Component {
         }
     };
 
-    onDiscarte(carte) {   
-        this.state.paquet.discarte(carte, this.props.action.joueur, this.props.action.type === ActionType.DISCARTER);
+    onCliqueCarte(carte) {   
+        this.state.paquet.cliqueCarte(carte, this.props.action.joueur, this.props.action);
+        if (this.props.action.cptJoueur === 0) {
+            this.state.paquet.sorteDemandee = carte.sorte;
+            if (carte.sorte === Sorte.BLANCHE || carte.sorte === Sorte.JOKER) {
+                this.state.paquet.sorteDemandee = this.props.mise.atout;
+            }
+        }
         this.props.nextAction();
     }
 
@@ -51,12 +58,12 @@ export class TableComponent extends Component {
         return (
             <div>
                 {/* Partenaire */}
-                <div style={{marginBottom: '60px'}}><JoueurComponent discarte={(carte) => this.onDiscarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur3()}></JoueurComponent></div>
+                <div style={{marginBottom: '60px'}}><JoueurComponent cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur3()}></JoueurComponent></div>
                 {/* Adversaires et Quettée */}
                 <Row style={{ marginTop: '0px', marginBottom: '30px' }}>
                     {/* Gauche */}
                     <Col style={{ marginRight: '120px' }}>
-                        <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur2()}></JoueurComponent>
+                        <JoueurComponent cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur2()}></JoueurComponent>
                     </Col>
                     {/* Quettée */}
                     {
@@ -74,12 +81,12 @@ export class TableComponent extends Component {
                     }
                     {/* Droite */}
                     <Col style={{ marginLeft: '120px' }}>
-                        <JoueurComponent discarte={(carte) => this.onDiscarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur4()}></JoueurComponent>
+                        <JoueurComponent cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur4()}></JoueurComponent>
                     </Col>
                 </Row>
                 {/* Moi */}
                 <div style={{ marginTop: '105px' }}>
-                    <JoueurComponent aria-hidden="true" discarte={(carte) => this.onDiscarte(carte)} moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent>
+                    <JoueurComponent aria-hidden="true" cliqueCarte={(carte) => this.onCliqueCarte(carte)} moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent>
                 </div>
             </div>
         )

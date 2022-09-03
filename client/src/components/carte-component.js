@@ -9,17 +9,20 @@ export class CarteComponent extends Component {
     render() {
         return (
             <div>
-                <Card
+                <Card 
                     hoverable
                     bordered
                     style={{
-                        width: 45, height: 70
+                        width: 45, height: 70, 
+                        backgroundColor: this.props.carte.rang === -1 ? 'transparent' : 'white',                        
+                        borderColor: this.props.carte.rang === -1 ? 'transparent' : 'white'
                     }}
                     cover={
                         <div className="App-center">
-                            {/* Visible */}
+                            {/* Ouvert */}
                             {
-                                (this.props.ouvert) && <div>
+                                (this.props.ouvert) &&
+                                <div hidden={this.props.carte.rang === -1}>
                                     <p style={{ color: this.props.carte.couleur, fontSize: '24px', marginTop: '-5px' }}>
                                         {this.props.carte.symbole}
                                     </p>
@@ -28,7 +31,8 @@ export class CarteComponent extends Component {
                             }
                             {/* Cachée */}
                             {
-                                (!this.props.ouvert) && <div>
+                                (!this.props.ouvert) &&
+                                <div>
                                     <div className="App-center" style={{marginTop: '3px'}}><img style={{height: '65px', width: '40px'}} alt="oups..." src={require(`../assets/images/endos.png`)} /></div>
                                 </div>
                             }

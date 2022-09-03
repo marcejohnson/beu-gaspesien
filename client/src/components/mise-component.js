@@ -24,6 +24,9 @@ export class MiseComponent extends Component {
         this.atoutsList.map((item, index) => {
             this.atouts.push(<Select.Option key={index}>{item}</Select.Option>);
         });
+        this.props.mise.montant = 95;
+        this.props.mise.joueur = 'Gilberte';
+        this.props.mise.atout = Sorte.PIQUE;
     }
 
     onJoueur(idx) {
@@ -70,6 +73,7 @@ export class MiseComponent extends Component {
                         <Select
                             allowClear
                             onChange={(joueur) => this.onJoueur(joueur)}
+                            defaultValue="Gilberte"
                         >
                             {this.joueurs}
                         </Select>
@@ -87,6 +91,7 @@ export class MiseComponent extends Component {
                         <Select
                             allowClear
                             onChange={(atout) => this.onAtout(atout)}
+                            defaultValue={Sorte.PIQUE}
                         >
                             {this.atouts}
                         </Select>

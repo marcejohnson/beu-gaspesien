@@ -47,7 +47,7 @@ export class Action {
         return action;
     }
 
-    next(mise, avecQuettee, paquet, remporteur) {
+    next(mise, avecQuettee, paquet) {
         const action = this.copy();
         switch (this.type) {
             case ActionType.GAGER: {
@@ -78,10 +78,15 @@ export class Action {
                     action.cptCarte = 0;
                     action.type = ActionType.JOUER;
                     const miseur = paquet.getJoueurParNom(mise.joueur);
-                    action.joueur = paquet.nextJoueur(miseur);
-                    for (let carte of action.joueur.getCartes()) {
+                    // Clear quettee pour miseur
+                    for (let carte of miseur.cartes) {
                         carte.surelevee = false;
                     }
+                    // Clear quettee pour partenaire
+                    for (let carte of action.joueur.cartes) {
+                        carte.surelevee = false;
+                    }
+                    action.joueur = paquet.getNextJoueur(miseur);
                 }
                 break;
             }
@@ -91,12 +96,15 @@ export class Action {
                     action.cptCarte = 0;
                     action.cptJoueur = 0;
                     action.type = ActionType.BRASSER;
-                    action.brasseur = paquet.nextJoueur(action.brasseur);
+                    action.brasseur = paquet.getNextJoueur(action.brasseur);
                     action.joueur = null;
                 } else if (action.cptJoueur === 4) {
                     action.cptCarte++;
                     action.cptJoueur = 0;
-                    action.joueur = this.paquet.getJoueurParNom(remporteur);
+                    action.joueur = paquet.getRemporteur(mise);
+                    paquet.clearMain();
+                } else {
+                    action.joueur = paquet.getNextJoueur(action.joueur);
                 }
                 break;
             }

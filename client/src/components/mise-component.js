@@ -24,9 +24,6 @@ export class MiseComponent extends Component {
         this.atoutsList.map((item, index) => {
             this.atouts.push(<Select.Option key={index}>{item}</Select.Option>);
         });
-        this.props.mise.montant = 95;
-        this.props.mise.joueur = 'Gilberte';
-        this.props.mise.atout = Sorte.PIQUE;
     }
 
     onJoueur(idx) {

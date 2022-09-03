@@ -8,9 +8,9 @@ export const Montant = {
 
 export class Mise {
     constructor() {
-        this.joueur = '';
-        this.montant = 0;
-        this.atout = '';
+        this.joueur = 'Gilberte';
+        this.montant = 95;
+        this.atout = Sorte.PIQUE;
         this.petite = false;
     }
 

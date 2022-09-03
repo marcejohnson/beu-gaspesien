@@ -142,7 +142,7 @@ class App extends Component {
                 <Row gutter={6}>
                   <Col><p style={{ color: 'white' }}>Jeu ouvert</p></Col>
                   <Col>
-                    <Switch onChange={(checked) => this.onJeuOuvert(checked)} />
+                    <Switch defaultChecked onChange={(checked) => this.onJeuOuvert(checked)} />
                   </Col>
                 </Row>
                 <Button type="primary" onClick={() => this.onBrasser()}>Brasser</Button>

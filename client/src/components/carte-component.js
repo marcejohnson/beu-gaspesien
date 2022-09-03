@@ -10,12 +10,12 @@ export class CarteComponent extends Component {
         return (
             <div>
                 <Card 
-                    hoverable
+                    hoverable={this.props.clickable}
                     bordered
                     style={{
                         width: 45, height: 70, 
-                        backgroundColor: this.props.carte.rang === -1 ? 'transparent' : 'white',                        
-                        borderColor: this.props.carte.rang === -1 ? 'transparent' : 'white'
+                        backgroundColor: this.props.carte.rang === -1 ? 'transparent' : this.props.clickable ? 'white' : 'grey',                        
+                        borderColor: this.props.carte.rang === -1 ? 'transparent' : this.props.clickable ? 'white' : 'grey'
                     }}
                     cover={
                         <div className="App-center">

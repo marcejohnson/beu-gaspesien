@@ -61,18 +61,20 @@ export class TableComponent extends Component {
         return (
             <div>
                 {/* Partenaire */}
-                <div style={{marginBottom: '60px'}}><JoueurComponent cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur3()}></JoueurComponent></div>
+                <div style={{marginBottom: '60px'}}>
+                    <JoueurComponent action={this.props.action} cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur3()}></JoueurComponent>
+                </div>
                 {/* Adversaires et Quettée */}
                 <Row style={{ marginTop: '0px', marginBottom: '30px' }}>
                     {/* Gauche */}
                     <Col style={{ marginRight: '120px' }}>
-                        <JoueurComponent cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur2()}></JoueurComponent>
+                        <JoueurComponent action={this.props.action} cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur2()}></JoueurComponent>
                     </Col>
                     {/* Quettée */}
                     {
                         (this.state.avecQuettee && this.props.action.type === ActionType.GAGER) &&
                         <Col style={{ marginTop: '38px' }} onClick={this.onQuettee}>
-                            <CartesComponent clickable={false} ouvert={this.props.ouvert} cartes={this.state.paquet.getQuettee()}></CartesComponent>
+                            <CartesComponent action={this.props.action} clickable={false} ouvert={this.props.ouvert} cartes={this.state.paquet.getQuettee()}></CartesComponent>
                         </Col>
                     }
                     {/* Main */}
@@ -84,12 +86,12 @@ export class TableComponent extends Component {
                     }
                     {/* Droite */}
                     <Col style={{ marginLeft: '120px' }}>
-                        <JoueurComponent cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur4()}></JoueurComponent>
+                        <JoueurComponent action={this.props.action} cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.state.paquet.getJoueur4()}></JoueurComponent>
                     </Col>
                 </Row>
                 {/* Moi */}
                 <div style={{ marginTop: '105px' }}>
-                    <JoueurComponent aria-hidden="true" cliqueCarte={(carte) => this.onCliqueCarte(carte)} moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent>
+                    <JoueurComponent action={this.props.action} cliqueCarte={(carte) => this.onCliqueCarte(carte)} moi='true' ouvert='true' joueur={this.state.paquet.getJoueur1()}></JoueurComponent>
                 </div>
             </div>
         )

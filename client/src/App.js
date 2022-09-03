@@ -96,6 +96,11 @@ class App extends Component {
     this.setState({
       action: action
     });
+    if (action.type === ActionType.REMPORTER) {
+      setTimeout(() => {
+        this.nextAction();
+      }, 3000);
+    }
   }
 
   getSousTitre() {

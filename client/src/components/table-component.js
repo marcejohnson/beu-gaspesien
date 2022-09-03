@@ -44,6 +44,9 @@ export class TableComponent extends Component {
     };
 
     onCliqueCarte(carte) {   
+        if (this.props.action === ActionType.REMPORTER) {
+            return;
+        }
         this.state.paquet.cliqueCarte(carte, this.props.action.joueur, this.props.action);
         if (this.props.action.cptJoueur === 0) {
             this.state.paquet.sorteDemandee = carte.sorte;
@@ -74,7 +77,7 @@ export class TableComponent extends Component {
                     }
                     {/* Main */}
                     {
-                        (this.props.action.type === ActionType.JOUER) &&
+                        (this.props.action.type === ActionType.JOUER || this.props.action.type === ActionType.REMPORTER) &&
                         <Col>
                             <MainComponent paquet={this.state.paquet} ouvert={this.props.ouvert}></MainComponent>
                         </Col>

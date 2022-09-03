@@ -3,7 +3,8 @@ export const ActionType = {
     PASSER: 1,
     DISCARTER: 2,
     JOUER: 3,
-    BRASSER: 4
+    REMPORTER: 4,
+    BRASSER: 5
 }
 
 export class Action {
@@ -11,6 +12,7 @@ export class Action {
         this.type = ActionType.GAGER;
         this.joueur = null;
         this.brasseur = brasseur;
+        this.remporteur = null;
         this.cptCarte = 0;
         this.cptJoueur = 0;
     }
@@ -31,6 +33,9 @@ export class Action {
             }
             case ActionType.BRASSER: {
                 return `${this.joueur.getNom()}, c'est à toi à brasser!`;
+            }            
+            case ActionType.REMPORTER: {
+                return `${this.remporteur.getNom()} a remporté la main!`;
             }
             default: {
                 return '';
@@ -93,19 +98,28 @@ export class Action {
             }
             case ActionType.JOUER: {
                 action.cptJoueur++;
-                if (action.cptCarte === 8 && this.cptJoueur === 4) {
+                 if (action.cptJoueur === 4) {
+                    action.type = ActionType.REMPORTER;
+                    action.cptCarte++;
+                    action.cptJoueur = 0;
+                    action.remporteur = paquet.getRemporteur(mise);
+                    action.joueur = action.remporteur;
+                } else {
+                    action.joueur = paquet.getNextJoueur(action.joueur);
+                }
+                break;
+            } 
+            case ActionType.REMPORTER: {                
+                paquet.clearMain();
+                if (action.cptCarte === 8) {
                     action.cptCarte = 0;
                     action.cptJoueur = 0;
                     action.type = ActionType.BRASSER;
                     action.brasseur = paquet.getNextJoueur(action.brasseur);
-                    action.joueur = null;
-                } else if (action.cptJoueur === 4) {
-                    action.cptCarte++;
-                    action.cptJoueur = 0;
-                    action.joueur = paquet.getRemporteur(mise);
-                    paquet.clearMain();
+                    action.joueur = action.remporteur.copy();
+                    action.remporteur = null;
                 } else {
-                    action.joueur = paquet.getNextJoueur(action.joueur);
+                    action.type = ActionType.JOUER;
                 }
                 break;
             }

@@ -80,5 +80,15 @@ export class Carte {
             return false;
         }
         return this.sorte === Sorte.BLANCHE || this.sorte === Sorte.JOKER || this.sorte === atout;
+    }    
+
+    isSorteDemandee(sorteDemandee, atout) {
+        if (sorteDemandee === this.sorte) {
+            return true;
+        }
+        if (sorteDemandee === atout && this.isAtout()) {
+            return true;
+        }
+        return false;
     }
 }

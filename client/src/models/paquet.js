@@ -33,6 +33,10 @@ export class Paquet {
         this.pile = [];
 
         this.attendre = false;
+
+        this.points = [0,0];
+
+        this.brasser();
     }
 
     setJoueurActif(joueurActif) {
@@ -123,6 +127,8 @@ export class Paquet {
         if (this.quettee !== null) {
             this.quettee = this.cartes.slice(32, 34).sort((a, b) => a.rang - b.rang);
         }
+        
+        this.points = [0,0];
     }
 
     cliqueCarte(carte, joueur, action) {
@@ -148,12 +154,14 @@ export class Paquet {
                     this.main[joueurIdx] = carte.copy();
                     const idx = joueur.cartes.findIndex((item) => item.key === carte.key);
                     joueur.cartes.splice(idx, 1);
+                    break;
                 }
+                default: {}
             }
         }
     }
 
-    getRemporteur(mise) {
+    getRemporteur(mise, mainDeTable) {
         let carteGagnante = this.main[0];
         let remporteur = this.joueur1;
         for (let i = 1; i < 4; ++i) {
@@ -178,6 +186,15 @@ export class Paquet {
                 }
             }
         }
+        let points = 0;
+        for (let carte of this.main) {
+            points += carte.points;
+        }
+        this.points[remporteur.equipeIdx] += points;
+        if (mainDeTable) {
+            this.points[remporteur.equipeIdx] += 10;
+        }
+        console.log(this.points);
         return remporteur;
     }
 }

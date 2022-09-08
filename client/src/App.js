@@ -8,37 +8,41 @@ import { LoginComponent } from "./components/login-component";
 import { MiseComponent } from "./components/mise-component";
 import { Mise } from "./models/mise";
 import { Action, ActionType } from "./models/action";
+import { Partie } from "./models/partie";
+import { Paquet } from "./models/paquet";
 
 const { Header, Content } = Layout;
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.tableRef = React.createRef();
+    const avecQuettee = true;
+    const paquet = new Paquet(avecQuettee);
     this.state = {
       action: new Action(),
-      avecQuettee: true,
+      avecQuettee: avecQuettee,
       loggedIn: true,
       titre: '',
       ouvert: true,
       showGager: false,
-      mise: null
+      mise: null,
+      paquet: paquet
     };
+    this.partie = new Partie(paquet);
     this.joueurs = [];
     this.attendre = false;
 
     fetch("/api")
       .then((res) => res.json())
       .then((data) => {
-        this.setState({
-          titre: data.message
-        })
+        this.state.titre = data.message
       });
   }
 
   onQuettee(checked) {
     this.state.avecQuettee = checked;
-    this.tableRef.current.brasser(this.state.avecQuettee);
+    this.state.paquet.brasser(this.state.avecQuettee);
+    this.nextAction();
   };
 
   onJeuOuvert() {
@@ -48,7 +52,7 @@ class App extends Component {
   }
 
   onBrasser() {
-    this.tableRef.current.brasser(this.state.avecQuettee);
+    this.partie.paquet.brasser(this.state.avecQuettee);
     this.state.mise = new Mise();
     this.setState({
       action: new Action()
@@ -59,15 +63,11 @@ class App extends Component {
     this.setState({ loggedIn: true });
   }
 
-  getJoueurs() {
-    return this.tableRef.current.getJoueurs();
-  }
-
   onGager = () => {
     this.setState({
       mise: new Mise()
     })
-    this.joueurs = this.getJoueurs();
+    this.joueurs = this.state.paquet.getJoueurs();
     this.setState({
       showGager: true,
     });
@@ -81,7 +81,6 @@ class App extends Component {
     this.setState({
       titre: titre
     })
-    const paquet = this.tableRef.current.state.paquet;
     this.nextAction();
   }
 
@@ -92,8 +91,9 @@ class App extends Component {
   }
 
   nextAction() {
-    const paquet = this.tableRef.current.state.paquet;
-    const action = this.state.action.next(this.state.mise, this.state.avecQuettee, paquet, null);
+    const paquet = this.state.paquet;
+    const brasseur = this.partie.brasses[this.partie.brasses.length - 1].brasseur;
+    const action = this.state.action.next(this.state.mise, this.state.avecQuettee, paquet, brasseur);
     this.setState({
       action: action
     });
@@ -102,14 +102,20 @@ class App extends Component {
       setTimeout(() => {
         this.nextAction();
         paquet.attendre = false;
-      }, 3000);
+      }, 500);
+    }
+    if (action.type === ActionType.BRASSER) {
+      this.partie.nextBrasse(this.state.paquet.points);
+      console.log(this.partie.brasses);
     }
   }
 
   getSousTitre() {
     let sousTitre = this.state.action.getMsg();
-    if (this.state.action.type === ActionType.JOUER && this.tableRef.current.state.paquet.sorteDemandee) {
-      sousTitre = `${sousTitre} (${this.tableRef.current.state.paquet.sorteDemandee} demandé)`
+    if (this.state.action !== null && this.state.partie !== null) {
+      if (this.state.action.type === ActionType.JOUER && this.state.paquet.sorteDemandee) {
+        sousTitre = `${sousTitre} (${this.state.paquet.sorteDemandee} demandé)`
+      }
     }
     return sousTitre;
   }
@@ -139,7 +145,7 @@ class App extends Component {
           {
             // Sous-titre
             (this.state.loggedIn) &&
-              <h2 style={{ color: "rgb(32,166,237)" }}>{this.getSousTitre()}</h2>
+            <h2 style={{ color: "rgb(32,166,237)" }}>{this.getSousTitre()}</h2>
           }
         </Header>
         <Content>
@@ -167,7 +173,7 @@ class App extends Component {
               </div>
               {/* Table */}
               <div className="App-center" style={{ marginTop: '-60px', height: '100vh' }}>
-                <TableComponent action={this.state.action} nextAction={this.onNextAction} mise={this.state.mise} ref={this.tableRef} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
+                <TableComponent paquet={this.state.paquet} action={this.state.action} nextAction={this.onNextAction} mise={this.state.mise} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
               </div>
               {/* Gager */}
               <Modal styles={this.bg}

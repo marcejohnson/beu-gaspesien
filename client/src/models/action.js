@@ -1,10 +1,10 @@
 export const ActionType = {
-    GAGER: 0,
-    PASSER: 1,
-    DISCARTER: 2,
-    JOUER: 3,
-    REMPORTER: 4,
-    BRASSER: 5
+    GAGER: 'GAGER',
+    PASSER: 'PASSER',
+    DISCARTER: 'DISCARTER',
+    JOUER: 'JOUER',
+    REMPORTER: 'REMPORTER',
+    BRASSER: 'BRASSER'
 }
 
 export class Action {
@@ -51,7 +51,7 @@ export class Action {
         return action;
     }
 
-    next(mise, avecQuettee, paquet) {
+    next(mise, avecQuettee, paquet, brasseur) {
         const action = this.copy();
         switch (this.type) {
             case ActionType.GAGER: {
@@ -101,7 +101,7 @@ export class Action {
                     action.type = ActionType.REMPORTER;
                     action.cptCarte++;
                     action.cptJoueur = 0;
-                    action.remporteur = paquet.getRemporteur(mise);
+                    action.remporteur = paquet.getRemporteur(mise, action.cptCarte === 8);
                     action.joueur = action.remporteur;
                 } else {
                     action.joueur = paquet.getNextJoueur(action.joueur);
@@ -114,7 +114,7 @@ export class Action {
                     action.cptCarte = 0;
                     action.cptJoueur = 0;
                     action.type = ActionType.BRASSER;
-                    action.joueur = paquet.joueur1;
+                    action.joueur = paquet.getNextJoueur(brasseur);
                     action.remporteur = null;
                 } else {
                     action.type = ActionType.JOUER;

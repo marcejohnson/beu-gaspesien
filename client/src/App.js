@@ -34,6 +34,7 @@ class App extends Component {
     this.partie = new Partie(paquet);
     this.joueurs = [];
     this.attendre = false;
+    this.atoutConnu = false;
 
     fetch("/api")
       .then((res) => res.json())
@@ -56,7 +57,7 @@ class App extends Component {
 
   onBrasser() {
     this.partie.paquet.brasser(this.state.avecQuettee);
-    this.state.mise = new Mise();
+    this.state.mise = null;
     this.setState({
       action: new Action()
     })
@@ -67,9 +68,14 @@ class App extends Component {
   }
 
   onGager = () => {
-    this.setState({
-      mise: new Mise()
-    })
+    let mise;
+    if (this.state.mise === null) {
+      mise = new Mise();
+      this.setState({
+        mise: mise
+      })
+    } 
+    
     this.joueurs = this.state.paquet.getJoueurs();
     this.setState({
       showGager: true,

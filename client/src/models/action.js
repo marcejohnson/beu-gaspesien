@@ -1,5 +1,6 @@
 export const ActionType = {
     GAGER: 'GAGER',
+    CHOISIR_ATOUT: 'CHOISIR_ATOUT',
     PASSER: 'PASSER',
     DISCARTER: 'DISCARTER',
     JOUER: 'JOUER',
@@ -20,6 +21,9 @@ export class Action {
         switch (this.type) {
             case ActionType.GAGER: {
                 return `C'est le temps de gager!`;
+            }
+            case ActionType.CHOISIR_ATOUT: {
+                return `${this.joueur.getNom()}, c'est le temps de choisir l'atout!`;
             }
             case ActionType.PASSER: {
                 return `${this.joueur.getNom()}, c'est à toi à discarter!`;
@@ -57,12 +61,16 @@ export class Action {
             case ActionType.GAGER: {
                 if (avecQuettee) {
                     paquet.prendreQuettee(mise);
-                    action.type = ActionType.PASSER;
+                    action.type = ActionType.CHOISIR_ATOUT;
                     action.cptCarte = 0;
                 } else {
                     action.type = ActionType.JOUER;
                 }
                 action.joueur = paquet.getJoueurParNom(mise.joueur);
+                break;
+            }
+            case ActionType.CHOISIR_ATOUT: {
+                action.type = ActionType.PASSER;
                 break;
             }
             case ActionType.PASSER: {

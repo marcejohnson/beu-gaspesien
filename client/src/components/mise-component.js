@@ -71,13 +71,16 @@ export class MiseComponent extends Component {
                             allowClear
                             onChange={(joueur) => this.onJoueur(joueur)}
                             defaultValue="Gilberte"
+                            disabled={this.props.mise.joueur !== null}
                         >
                             {this.joueurs}
                         </Select>
                     </Form.Item>
                     {/* Montant */}
                     <Form.Item label="Combien?" required style={{width: '600px'}}>
-                        <Radio.Group onChange={(e) => this.onMontantRadio(e.target.value)} value={this.state.radioIdx} style={{width: '600px'}}>
+                        <Radio.Group onChange={(e) => this.onMontantRadio(e.target.value)} 
+                            value={this.state.radioIdx} style={{width: '600px'}}                            
+                            disabled={this.props.mise.joueur !== null}>
                             <Radio value={1}><InputNumber style={{width:'70px'}} defaultValue="60" step="5" min="50" max="140" onChange={(value) => this.onMontant(value)} /></Radio>
                             <Radio value={2}>{Montant.PETITE}</Radio>
                             <Radio value={3}>{Montant.GROSSE}</Radio>
@@ -88,7 +91,8 @@ export class MiseComponent extends Component {
                         <Select
                             allowClear
                             onChange={(atout) => this.onAtout(atout)}
-                            defaultValue={Sorte.PIQUE}
+                            defaultValue={Sorte.PIQUE}                            
+                            disabled={this.props.mise.joueur === null}
                         >
                             {this.atouts}
                         </Select>

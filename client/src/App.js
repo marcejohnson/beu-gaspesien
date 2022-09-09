@@ -10,6 +10,7 @@ import { Mise } from "./models/mise";
 import { Action, ActionType } from "./models/action";
 import { Partie } from "./models/partie";
 import { Paquet } from "./models/paquet";
+import { ScoreComponent } from "./components/score-component";
 
 const { Header, Content } = Layout;
 
@@ -17,7 +18,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     const avecQuettee = true;
-    const paquet = new Paquet(avecQuettee);
+    const paquet = new Paquet(avecQuettee);    
+    this.scoreRef = React.createRef();
     this.state = {
       action: new Action(),
       avecQuettee: avecQuettee,
@@ -25,6 +27,7 @@ class App extends Component {
       titre: '',
       ouvert: true,
       showGager: false,
+      showScore: false,
       mise: null,
       paquet: paquet
     };
@@ -73,7 +76,16 @@ class App extends Component {
     });
   }
 
-  onOk = (e) => {
+  onScore = () => {
+    if (this.scoreRef.current !== null) {
+      this.scoreRef.current.updateData(this.partie.brasses);
+    }
+    this.setState({
+      showScore: true,
+    });
+  }
+
+  onGagerOk = (e) => {
     this.setState({
       showGager: false,
     });
@@ -84,9 +96,21 @@ class App extends Component {
     this.nextAction();
   }
 
-  onCancel = (e) => {
+  onGagerCancel = (e) => {
     this.setState({
       showGager: false,
+    });
+  }
+
+  onScoreOk = (e) => {
+    this.setState({
+      showScore: false,
+    });
+  }
+
+  onScoreCancel = (e) => {
+    this.setState({
+      showScore: false,
     });
   }
 
@@ -105,7 +129,7 @@ class App extends Component {
       }, 500);
     }
     if (action.type === ActionType.BRASSER) {
-      this.partie.nextBrasse(this.state.paquet.points);
+      this.partie.nextBrasse(this.state.paquet.points, this.state.mise);
       console.log(this.partie.brasses);
     }
   }
@@ -170,6 +194,7 @@ class App extends Component {
                 </Row>
                 <Button type="primary" onClick={() => this.onBrasser()}>Brasser</Button>
                 <Button style={{ marginTop: '15px' }} type="primary" onClick={() => this.onGager()}>Gager</Button>
+                <Button style={{ marginTop: '15px' }} type="primary" onClick={() => this.onScore()}>Score</Button>
               </div>
               {/* Table */}
               <div className="App-center" style={{ marginTop: '-60px', height: '100vh' }}>
@@ -179,10 +204,20 @@ class App extends Component {
               <Modal styles={this.bg}
                 title="Configurer la mise"
                 visible={this.state.showGager}
-                onOk={this.onOk}
-                onCancel={this.onCancel}
+                onOk={this.onGagerOk}
+                onCancel={this.onGagerCancel}
               >
                 <MiseComponent mise={this.state.mise} joueurs={this.joueurs}></MiseComponent>
+              </Modal>
+              {/* Score */}
+              <Modal styles={this.bg}
+                title="Score"
+                visible={this.state.showScore}
+                onOk={this.onScoreOk}
+                onCancel={this.onScoreCancel}
+              >
+                <ScoreComponent brasses={this.partie.brasses}
+                  ref={this.scoreRef}></ScoreComponent>
               </Modal>
             </div>
           }

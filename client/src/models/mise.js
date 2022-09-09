@@ -21,7 +21,7 @@ export class Mise {
         }
         let atoutStr = '';
         if (this.atout !== null) {
-            atoutStr = Sorte.SANS_ATOUT? Sorte.SANS_ATOUT : ` en ${this.atout}`;
+            atoutStr = Sorte.SANS_ATOUT? ` ${Sorte.SANS_ATOUT}` : ` en ${this.atout}`;
         }
         return `${this.joueur} a gagé ${montantStr}${atoutStr}.`;
     }

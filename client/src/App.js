@@ -29,7 +29,8 @@ class App extends Component {
       showGager: false,
       showScore: false,
       mise: null,
-      paquet: paquet
+      paquet: paquet,
+      choisirAtout: false
     };
     this.partie = new Partie(paquet);
     this.joueurs = [];
@@ -44,8 +45,8 @@ class App extends Component {
   }
 
   onQuettee(checked) {
-    this.state.avecQuettee = checked;
-    this.state.paquet.brasser(this.state.avecQuettee);
+    this.setState({ avecQuettee: checked });
+    this.state.paquet.brasser(checked);
     this.nextAction();
   };
 
@@ -57,7 +58,7 @@ class App extends Component {
 
   onBrasser() {
     this.partie.paquet.brasser(this.state.avecQuettee);
-    this.state.mise = null;
+    this.setState({ mise: null });
     this.setState({
       action: new Action()
     })
@@ -94,6 +95,7 @@ class App extends Component {
   onGagerOk = (e) => {
     this.setState({
       showGager: false,
+      choisirAtout: !this.state.choisirAtout
     });
     const titre = this.state.mise.getStr();
     this.setState({
@@ -213,7 +215,7 @@ class App extends Component {
                 onOk={this.onGagerOk}
                 onCancel={this.onGagerCancel}
               >
-                <MiseComponent mise={this.state.mise} joueurs={this.joueurs}></MiseComponent>
+                <MiseComponent mise={this.state.mise} joueurs={this.joueurs} atoutEnabled={this.state.choisirAtout}></MiseComponent>
               </Modal>
               {/* Score */}
               <Modal styles={this.bg}

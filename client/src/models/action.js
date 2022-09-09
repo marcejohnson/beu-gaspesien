@@ -70,6 +70,7 @@ export class Action {
                 break;
             }
             case ActionType.CHOISIR_ATOUT: {
+                paquet.trierBibittes(mise);
                 action.type = ActionType.PASSER;
                 break;
             }

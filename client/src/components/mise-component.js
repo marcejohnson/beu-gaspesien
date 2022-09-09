@@ -15,15 +15,15 @@ export class MiseComponent extends Component {
         }
 
         this.joueurs = [];
-        this.props.joueurs.map((item, index) => {
-            this.joueurs.push(<Select.Option key={index}>{item}</Select.Option>);
-        });
+        this.props.joueurs.map((item, index) => 
+            this.joueurs.push(<Select.Option key={index}>{item}</Select.Option>)
+        );
 
         this.atoutsList = [Sorte.COEUR, Sorte.PIQUE, Sorte.CARREAU, Sorte.TREFLE, Sorte.SANS_ATOUT];
         this.atouts = [];
-        this.atoutsList.map((item, index) => {
-            this.atouts.push(<Select.Option key={index}>{item}</Select.Option>);
-        });
+        this.atoutsList.map((item, index) => 
+            this.atouts.push(<Select.Option key={index}>{item}</Select.Option>)
+        );
     }
 
     onJoueur(idx) {
@@ -52,7 +52,7 @@ export class MiseComponent extends Component {
     }
 
     render() {
-
+        console.log(this.props.atoutEnabled)
         return (
             <div>
                 <Form
@@ -71,7 +71,7 @@ export class MiseComponent extends Component {
                             allowClear
                             onChange={(joueur) => this.onJoueur(joueur)}
                             defaultValue="Gilberte"
-                            disabled={this.props.mise.joueur !== null}
+                            disabled={this.props.atoutEnabled}
                         >
                             {this.joueurs}
                         </Select>
@@ -80,8 +80,11 @@ export class MiseComponent extends Component {
                     <Form.Item label="Combien?" required style={{width: '600px'}}>
                         <Radio.Group onChange={(e) => this.onMontantRadio(e.target.value)} 
                             value={this.state.radioIdx} style={{width: '600px'}}                            
-                            disabled={this.props.mise.joueur !== null}>
-                            <Radio value={1}><InputNumber style={{width:'70px'}} defaultValue="60" step="5" min="50" max="140" onChange={(value) => this.onMontant(value)} /></Radio>
+                            disabled={this.props.atoutEnabled}>
+                            <Radio value={1}><InputNumber style={{width:'70px'}} 
+                                defaultValue="60" step="5" min="50" max="140"                                
+                                disabled={this.props.atoutEnabled}
+                                onChange={(value) => this.onMontant(value)} /></Radio>
                             <Radio value={2}>{Montant.PETITE}</Radio>
                             <Radio value={3}>{Montant.GROSSE}</Radio>
                         </Radio.Group>
@@ -92,8 +95,7 @@ export class MiseComponent extends Component {
                             allowClear
                             onChange={(atout) => this.onAtout(atout)}
                             defaultValue={Sorte.PIQUE}                            
-                            disabled={this.props.mise.joueur === null}
-                        >
+                            disabled={!this.props.atoutEnabled}>
                             {this.atouts}
                         </Select>
                     </Form.Item>

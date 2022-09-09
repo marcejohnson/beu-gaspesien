@@ -5,12 +5,8 @@ import { Row, Col } from 'antd';
 import "antd/dist/antd.css";
 import { CarteComponent } from './carte-component';
 import { ActionType } from '../models/action';
-import { Sorte } from '../models/carte';
 
 export class CartesComponent extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     onClick = (e, carte) => {
         if (this.isDisabled(carte)) {

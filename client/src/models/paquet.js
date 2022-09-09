@@ -34,7 +34,7 @@ export class Paquet {
 
         this.attendre = false;
 
-        this.points = [0,0];
+        this.points = [0, 0];
 
         this.brasser();
     }
@@ -86,15 +86,15 @@ export class Paquet {
     }
 
     clearMain() {
-        this.main = [new Carte(),new Carte(),new Carte(),new Carte()];
+        this.main = [new Carte(), new Carte(), new Carte(), new Carte()];
         this.sorteDemandee = null;
     }
 
     prendreQuettee(mise) {
         const joueur = this.getJoueurParNom(mise.joueur);
         if (joueur !== null) {
-            const carte1 = this.quettee[0].copy();
-            const carte2 = this.quettee[1].copy();
+            const carte1 = this.quettee[0];
+            const carte2 = this.quettee[1];
             carte1.surelevee = true;
             carte2.surelevee = true;
             joueur.cartes.push(carte1);
@@ -113,22 +113,27 @@ export class Paquet {
     }
 
     brasser() {
+        // Remet les bibittes dans l'ordre initial        
+        const joker = this.cartes.find(carte => carte.sorte === Sorte.JOKER);
+        joker.rang = 32;
+        const blanche = this.cartes.find(carte => carte.sorte === Sorte.BLANCHE);
+        blanche.rang = 33;
         for (let i = this.cartes.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * i);
             const temp = this.cartes[i];
             this.cartes[i] = this.cartes[j];
             this.cartes[j] = temp;
         }
-        this.joueur1.setCartes(this.cartes.slice(0, 8).sort((a, b) => a.rang - b.rang));
-        this.joueur2.setCartes(this.cartes.slice(8, 16).sort((a, b) => a.rang - b.rang));
-        this.joueur3.setCartes(this.cartes.slice(16, 24).sort((a, b) => a.rang - b.rang));
-        this.joueur4.setCartes(this.cartes.slice(24, 32).sort((a, b) => a.rang - b.rang));
+        this.joueur1.cartes = this.cartes.slice(0, 8).sort((a, b) => a.rang - b.rang);
+        this.joueur2.cartes = this.cartes.slice(8, 16).sort((a, b) => a.rang - b.rang);
+        this.joueur3.cartes = this.cartes.slice(16, 24).sort((a, b) => a.rang - b.rang);
+        this.joueur4.cartes = this.cartes.slice(24, 32).sort((a, b) => a.rang - b.rang);
 
         if (this.quettee !== null) {
             this.quettee = this.cartes.slice(32, 34).sort((a, b) => a.rang - b.rang);
         }
-        
-        this.points = [0,0];
+
+        this.points = [0, 0];
     }
 
     cliqueCarte(carte, joueur, action) {
@@ -156,7 +161,7 @@ export class Paquet {
                     joueur.cartes.splice(idx, 1);
                     break;
                 }
-                default: {}
+                default: { }
             }
         }
     }
@@ -170,12 +175,12 @@ export class Paquet {
                 carteGagnante = carte;
                 remporteur = this.getJoueurParIdx(i);
             } else if (carte.sorte === this.sorteDemandee && carteGagnante.sorte !== this.sorteDemandee && !carteGagnante.isAtout(mise.atout)) {
-                carteGagnante = carte;                
+                carteGagnante = carte;
                 remporteur = this.getJoueurParIdx(i);
             } else if (carte.sorte === carteGagnante.sorte || (carte.isAtout(mise.atout) && carteGagnante.isAtout(mise.atout))) {
                 if (mise.petite) {
                     if (carte.rang < carteGagnante.rang) {
-                        carteGagnante = carte;                        
+                        carteGagnante = carte;
                         remporteur = this.getJoueurParIdx(i);
                     }
                 } else {
@@ -196,5 +201,48 @@ export class Paquet {
         }
         console.log(this.points);
         return remporteur;
+    }
+
+    trierBibittes(mise) {
+        let rangs = [-1, -1];
+
+        switch (mise.atout) {
+            case Sorte.COEUR: {
+                rangs = [0, 7];
+                break;
+            }
+            case Sorte.PIQUE: {
+                rangs = [8, 15];
+                break;
+            }
+            case Sorte.CARREAU: {
+                rangs = [16, 23];
+                break;
+            }
+            case Sorte.TREFLE: {
+                rangs = [24, 31];
+                break;
+            }
+            case Sorte.SANS_ATOUT: {
+                rangs = [0, 31]
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+        
+        const joker = this.cartes.find(carte => carte.sorte === Sorte.JOKER);
+        const blanche = this.cartes.find(carte => carte.sorte === Sorte.BLANCHE);
+        if (mise.petite) {
+            if (joker !== undefined) joker.rang = rangs[0] - 0.25;
+            if (blanche !== undefined) blanche.rang = rangs[0] - 0.75;
+        } else {
+            if (joker !== undefined) joker.rang = rangs[1] + 0.25;
+            if (blanche !== undefined) blanche.rang = rangs[1] + 0.75;
+        }
+        for (let joueur of this.joueurs) {
+            joueur.cartes.sort((a, b) => a.rang - b.rang);
+        }
     }
 }

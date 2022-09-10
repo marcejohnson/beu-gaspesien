@@ -55,7 +55,7 @@ export class Action {
         return action;
     }
 
-    next(mise, avecQuettee, paquet, brasseur) {
+    next(mise, avecQuettee, paquet, brasseur, auto) {
         const action = this.copy();
         switch (this.type) {
             case ActionType.GAGER: {
@@ -115,6 +115,7 @@ export class Action {
                 } else {
                     action.joueur = paquet.getNextJoueur(action.joueur);
                 }
+
                 break;
             } 
             case ActionType.REMPORTER: {                

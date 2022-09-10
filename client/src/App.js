@@ -19,7 +19,8 @@ class App extends Component {
     super(props);
     const avecQuettee = true;
     const paquet = new Paquet(avecQuettee);    
-    this.scoreRef = React.createRef();
+    this.scoreRef = React.createRef();   
+    this.tableRef = React.createRef();
     this.state = {
       action: new Action(),
       avecQuettee: avecQuettee,
@@ -136,7 +137,7 @@ class App extends Component {
   nextAction() {
     const paquet = this.state.paquet;
     const brasseur = this.partie.brasses[this.partie.brasses.length - 1].brasseur;
-    const action = this.state.action.next(this.state.mise, this.state.avecQuettee, paquet, brasseur);
+    const action = this.state.action.next(this.state.mise, this.state.avecQuettee, paquet, brasseur, this.state.auto);
     this.setState({
       action: action
     });
@@ -145,11 +146,17 @@ class App extends Component {
       setTimeout(() => {
         this.nextAction();
         paquet.attendre = false;
-      }, 500);
+      }, 2000);
     }
     if (action.type === ActionType.BRASSER) {
       this.partie.nextBrasse(this.state.paquet.points, this.state.mise);
-      console.log(this.partie.brasses);
+    }
+    
+    if (action.type === ActionType.JOUER && action.joueur.index !== 0 && this.state.auto) {
+      setTimeout(() => {
+        this.tableRef.current.onCliqueCarte(action.joueur.cartes[0]);
+        paquet.attendre = false;
+      }, 2000);
     }
   }
 
@@ -214,7 +221,7 @@ class App extends Component {
                 <Row gutter={6}>
                   <Col><p style={{ color: 'white' }}>Auto</p></Col>
                   <Col>
-                    <Switch defaultChecked onChange={(checked) => this.onAuto(checked)} />
+                    <Switch onChange={(checked) => this.onAuto(checked)} />
                   </Col>
                 </Row>
                 <Button type="primary" onClick={() => this.onBrasser()}>Brasser</Button>
@@ -223,7 +230,7 @@ class App extends Component {
               </div>
               {/* Table */}
               <div className="App-center" style={{ marginTop: '-60px', height: '100vh' }}>
-                <TableComponent paquet={this.state.paquet} action={this.state.action} nextAction={this.onNextAction} mise={this.state.mise} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
+                <TableComponent ref={this.tableRef} paquet={this.state.paquet} action={this.state.action} nextAction={this.onNextAction} mise={this.state.mise} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
               </div>
               {/* Gager */}
               <Modal styles={this.bg}

@@ -199,7 +199,6 @@ export class Paquet {
         if (mainDeTable) {
             this.points[remporteur.equipeIdx] += 10;
         }
-        console.log(this.points);
         return remporteur;
     }
 

@@ -52,7 +52,6 @@ export class MiseComponent extends Component {
     }
 
     render() {
-        console.log(this.props.atoutEnabled)
         return (
             <div>
                 <Form

@@ -24,24 +24,29 @@ class App extends Component {
       action: new Action(),
       avecQuettee: avecQuettee,
       loggedIn: true,
-      titre: '',
       ouvert: true,
       showGager: false,
       showScore: false,
       mise: null,
       paquet: paquet,
-      choisirAtout: false
+      choisirAtout: false,
+      auto: false,
+      titre: null
     };
     this.partie = new Partie(paquet);
     this.joueurs = [];
     this.attendre = false;
     this.atoutConnu = false;
+  }
 
-    fetch("/api")
+  componentDidMount() {
+    if (this.state.titre === null) {
+      fetch("/api")
       .then((res) => res.json())
       .then((data) => {
-        this.state.titre = data.message
+        this.setState({titre: data.message});
       });
+    }
   }
 
   onQuettee(checked) {
@@ -53,6 +58,12 @@ class App extends Component {
   onJeuOuvert() {
     this.setState(state => ({
       ouvert: !state.ouvert
+    }));
+  }
+
+  onAuto() {
+    this.setState(state => ({
+      auto: !state.auto
     }));
   }
 
@@ -198,6 +209,12 @@ class App extends Component {
                   <Col><p style={{ color: 'white' }}>Jeu ouvert</p></Col>
                   <Col>
                     <Switch defaultChecked onChange={(checked) => this.onJeuOuvert(checked)} />
+                  </Col>
+                </Row>
+                <Row gutter={6}>
+                  <Col><p style={{ color: 'white' }}>Auto</p></Col>
+                  <Col>
+                    <Switch defaultChecked onChange={(checked) => this.onAuto(checked)} />
                   </Col>
                 </Row>
                 <Button type="primary" onClick={() => this.onBrasser()}>Brasser</Button>

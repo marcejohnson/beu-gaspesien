@@ -204,27 +204,27 @@ export class Paquet {
     }
 
     trierBibittes(mise) {
-        let rangs = [-1, -1];
+        let rang1 = -1;
 
         switch (mise.atout) {
             case Sorte.COEUR: {
-                rangs = [0, 7];
+                rang1 = 7;
                 break;
             }
             case Sorte.PIQUE: {
-                rangs = [8, 15];
+                rang1 = 15;
                 break;
             }
             case Sorte.CARREAU: {
-                rangs = [16, 23];
+                rang1 = 23;
                 break;
             }
             case Sorte.TREFLE: {
-                rangs = [24, 31];
+                rang1 = 31;
                 break;
             }
             case Sorte.SANS_ATOUT: {
-                rangs = [0, 31]
+                rang1 = 0;
                 break;
             }
             default: {
@@ -234,12 +234,18 @@ export class Paquet {
         
         const joker = this.cartes.find(carte => carte.sorte === Sorte.JOKER);
         const blanche = this.cartes.find(carte => carte.sorte === Sorte.BLANCHE);
-        if (mise.petite) {
-            if (joker !== undefined) joker.rang = rangs[0] - 0.25;
-            if (blanche !== undefined) blanche.rang = rangs[0] - 0.75;
+        
+        if (mise.sorte === Sorte.SANS_ATOUT) {
+            if (mise.petite) {
+                if (joker !== undefined) joker.rang = rang1 + 0.25;
+                if (blanche !== undefined) blanche.rang = rang1 + 0.75;
+            } else {
+                if (joker !== undefined) joker.rang = rang1 - 0.75;
+                if (blanche !== undefined) blanche.rang = rang1 - 0.25;
+            }
         } else {
-            if (joker !== undefined) joker.rang = rangs[1] + 0.25;
-            if (blanche !== undefined) blanche.rang = rangs[1] + 0.75;
+            if (joker !== undefined) joker.rang = rang1 + 0.25;
+            if (blanche !== undefined) blanche.rang = rang1 + 0.75;
         }
         for (let joueur of this.joueurs) {
             joueur.cartes.sort((a, b) => a.rang - b.rang);

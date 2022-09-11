@@ -37,7 +37,7 @@ class App extends Component {
     this.partie = new Partie(paquet);
     this.joueurs = [];
     this.attendre = false;
-    this.atoutConnu = false;
+    this.atoutConnu = false;;
   }
 
   componentDidMount() {
@@ -146,10 +146,11 @@ class App extends Component {
       setTimeout(() => {
         this.nextAction();
         paquet.attendre = false;
-      }, 2000);
+      }, 500);
     }
     if (action.type === ActionType.BRASSER) {
       this.partie.nextBrasse(this.state.paquet.points, this.state.mise);
+      this.setState({showScore: true});
     }
     
     if (action.type === ActionType.JOUER && action.joueur.index !== 0 && this.state.auto) {
@@ -161,7 +162,7 @@ class App extends Component {
           }
         }        
         paquet.attendre = false;
-      }, 2000);
+      }, 500);
     }
   }
 

@@ -23,9 +23,9 @@ export class Partie {
 
         if (points[equipeMise] >= mise.montant) {
             if (mise.montant === 150) {
-                brasseCourante.points[autreEquipe] += 500;
+                brasseCourante.points[equipeMise] += 500;
             } else {
-                brasseCourante.points[autreEquipe] += points[autreEquipe];
+                brasseCourante.points[equipeMise] += points[equipeMise];
             }
         } else {
             brasseCourante.points[equipeMise] -= mise.montant;

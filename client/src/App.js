@@ -154,7 +154,12 @@ class App extends Component {
     
     if (action.type === ActionType.JOUER && action.joueur.index !== 0 && this.state.auto) {
       setTimeout(() => {
-        this.tableRef.current.onCliqueCarte(action.joueur.cartes[0]);
+        for (let carte of action.joueur.cartes) {
+          if (!carte.isDisabled(action.joueur.cartes, this.state.paquet.sorteDemandee, this.state.mise.atout)) {
+            this.tableRef.current.onCliqueCarte(carte);
+            break;
+          }
+        }        
         paquet.attendre = false;
       }, 2000);
     }

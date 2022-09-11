@@ -47,7 +47,7 @@ export class Carte {
             case Sorte.TREFLE: {
                 this.image = 'trefle.png';
                 break;
-            }            
+            }
             case Sorte.JOKER: {
                 this.image = 'joker.png';
                 break;
@@ -80,7 +80,7 @@ export class Carte {
             return false;
         }
         return this.sorte === Sorte.BLANCHE || this.sorte === Sorte.JOKER || this.sorte === atout;
-    }    
+    }
 
     isSorteDemandee(sorteDemandee, atout) {
         if (sorteDemandee === this.sorte) {
@@ -90,5 +90,21 @@ export class Carte {
             return true;
         }
         return false;
+    }
+
+    isDisabled(cartes, sorteDemandee, atout) {
+        if (sorteDemandee === null) {
+            return false;
+        }
+
+        if (this.isSorteDemandee(sorteDemandee, atout)) {
+            return false;
+        }
+
+        const idx = cartes.findIndex(i => i.isSorteDemandee(sorteDemandee, atout));
+        if (idx === -1) {
+            return false;
+        }
+        return true;
     }
 }

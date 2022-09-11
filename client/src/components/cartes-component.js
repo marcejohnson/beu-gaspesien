@@ -35,18 +35,7 @@ export class CartesComponent extends Component {
             return true;
         }
         if (this.props.action.type === ActionType.JOUER) {
-            if (this.props.sorteDemandee === null) {
-                return false;
-            }
-            if (carte.isSorteDemandee(this.props.sorteDemandee, this.props.mise.atout)) {
-                return false;
-            }
-
-            const idx = this.props.cartes.findIndex(i => i.isSorteDemandee(this.props.sorteDemandee, this.props.mise.atout));
-            if (idx === -1) {
-                return false;
-            }
-            return true;
+            return carte.isDisabled(this.props.cartes, this.props.sorteDemandee, this.props.mise.atout);
         }
         return false;
     }

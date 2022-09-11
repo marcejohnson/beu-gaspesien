@@ -15,7 +15,6 @@ export class Mise {
     }
 
     getStr() {
-        debugger
         let montantStr = `${this.montant}`;
         if (this.montant === 150) {
             montantStr = this.petite? Montant.PETITE : Montant.GROSSE;

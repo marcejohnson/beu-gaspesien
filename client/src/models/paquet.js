@@ -250,4 +250,25 @@ export class Paquet {
             joueur.cartes.sort((a, b) => a.rang - b.rang);
         }
     }
+
+    getMeilleureCarte(action) {
+        const cartes = action.joueur.cartes;
+        // 1re main, 1re carte
+        if (action.cptCarte === 0 && action.cptJoueur === 0) {
+            const cartesAs = cartes.filter(c => c.symbole === Symbole.AS);
+            const cartesBeu = cartes.filter(c => c.symbole === Symbole.ROI);
+            const cartes10 = cartes.filter(c => c.symbole === Symbole.DIX);
+            for (let as of cartesAs) {
+                if (!as.isAtout()) {
+                    const beuMemeSorte = cartesBeu.find(c => c.sorte === as.sorte);
+                    if (beuMemeSorte !== undefined) {
+                        return beuMemeSorte;
+                    }
+                    return as;
+                }
+            }
+            return cartes[0];
+        }
+        return cartes.find(c => !c.isDisabled());
+    }
 }

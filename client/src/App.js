@@ -18,8 +18,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     const avecQuettee = true;
-    const paquet = new Paquet(avecQuettee);    
-    this.scoreRef = React.createRef();   
+    const paquet = new Paquet(avecQuettee);
+    this.scoreRef = React.createRef();
     this.tableRef = React.createRef();
     this.state = {
       action: new Action(),
@@ -43,10 +43,10 @@ class App extends Component {
   componentDidMount() {
     if (this.state.titre === null) {
       fetch("/api")
-      .then((res) => res.json())
-      .then((data) => {
-        this.setState({titre: data.message});
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          this.setState({ titre: data.message });
+        });
     }
   }
 
@@ -87,8 +87,8 @@ class App extends Component {
       this.setState({
         mise: mise
       })
-    } 
-    
+    }
+
     this.joueurs = this.state.paquet.getJoueurs();
     this.setState({
       showGager: true,
@@ -151,18 +151,13 @@ class App extends Component {
     if (action.type === ActionType.BRASSER) {
       debugger
       this.partie.nextBrasse(this.state.paquet.points, this.state.mise);
-      this.setState({showScore: true},
+      this.setState({ showScore: true },
         this.onScore);
     }
-    
+
     if (action.type === ActionType.JOUER && action.joueur.index !== 0 && this.state.auto) {
       setTimeout(() => {
-        for (let carte of action.joueur.cartes) {
-          if (!carte.isDisabled(action.joueur.cartes, this.state.paquet.sorteDemandee, this.state.mise.atout)) {
-            this.tableRef.current.onCliqueCarte(carte);
-            break;
-          }
-        }        
+        this.tableRef.current.onCliqueCarte(this.state.paquet.getMeilleureCarte(action));
         paquet.attendre = false;
       }, 500);
     }

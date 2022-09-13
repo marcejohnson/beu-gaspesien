@@ -149,8 +149,10 @@ class App extends Component {
       }, 500);
     }
     if (action.type === ActionType.BRASSER) {
+      debugger
       this.partie.nextBrasse(this.state.paquet.points, this.state.mise);
-      this.setState({showScore: true});
+      this.setState({showScore: true},
+        this.onScore);
     }
     
     if (action.type === ActionType.JOUER && action.joueur.index !== 0 && this.state.auto) {

@@ -25,12 +25,14 @@ export const Symbole = {
 }
 
 export class Carte {
-    constructor(rang = -1, sorte = '', symbole = '') {
+    constructor(rang = -1, sorte = '', symbole = '', poids = 0) {
         this.rang = rang;
         this.key = `${symbole}|${sorte}`;
         this.sorte = sorte;
         this.symbole = symbole;
         this.surelevee = false;
+        this.poids = poids;
+        
         switch (this.sorte) {
             case Sorte.COEUR: {
                 this.image = 'coeur.png';
@@ -71,7 +73,7 @@ export class Carte {
     }
 
     copy() {
-        const carte = new Carte(this.rang, this.sorte, this.symbole);
+        const carte = new Carte(this.rang, this.sorte, this.symbole, this.poids);
         return carte;
     }
 
@@ -106,5 +108,43 @@ export class Carte {
             return false;
         }
         return true;
+    }
+
+    isSeche(cartes, atout) {
+        // Cherche même sorte
+        const memeSorte = cartes.find(c => c.sorte === this.sorte && c.symbole !== this.symbole);
+        if (memeSorte !== undefined) {
+            // Si trouvé, carte pas sèche
+            return false;
+        }
+        // Si carte d'atout, cherche bibittes
+        if (this.isAtout(atout)) {
+            const bibittes = cartes.filter(c => c.poids > 14);
+            if (bibittes.length > 0) {
+                // Si trouvées, carte pas sèche
+                return false;
+            }
+        }
+        // Carte sèche
+        return true;
+    }
+
+    isChien(atout, dixPasse) {
+        if (this.sorte === atout) {
+            return false;
+        }
+        if (this.points !== 0) {
+            return false;
+        }
+        if (this.poids < 10) {
+            return true;
+        }
+        if ((this.symbole === Symbole.JACK || this.symbole === Symbole.DAME) && dixPasse) {
+            return true;
+        }
+        if (this.poids > 14 && atout === Sorte.SANS_ATOUT) {
+            return true;
+        }
+        return false;
     }
 }

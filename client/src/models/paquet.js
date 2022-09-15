@@ -7,16 +7,17 @@ export class Paquet {
         this.cartes = [];
         let rang = 0;
         for (let sorte of [Sorte.COEUR, Sorte.PIQUE, Sorte.CARREAU, Sorte.TREFLE]) {
+            let poids = 7;
             for (let symbole of [Symbole.SEPT, Symbole.HUIT, Symbole.NEUF, Symbole.DIX, Symbole.JACK, Symbole.DAME, Symbole.ROI, Symbole.AS]) {
-                this.cartes.push(new Carte(rang++, sorte, symbole));
+                this.cartes.push(new Carte(rang++, sorte, symbole, poids++));
             }
         }
 
         this.quettee = null;
         if (avecQuettee) {
             this.quettee = [];
-            this.cartes.push(new Carte(rang++, Sorte.JOKER, ''));
-            this.cartes.push(new Carte(rang, Sorte.BLANCHE, ''));
+            this.cartes.push(new Carte(rang++, Sorte.JOKER, '', 15));
+            this.cartes.push(new Carte(rang, Sorte.BLANCHE, '', 16));
         }
 
         this.joueur1 = new Joueur('Gilberte', 0, 'Georgette');
@@ -230,10 +231,10 @@ export class Paquet {
                 break;
             }
         }
-        
+
         const joker = this.cartes.find(carte => carte.sorte === Sorte.JOKER);
         const blanche = this.cartes.find(carte => carte.sorte === Sorte.BLANCHE);
-        
+
         if (mise.sorte === Sorte.SANS_ATOUT) {
             if (mise.petite) {
                 if (joker !== undefined) joker.rang = rang1 + 0.25;
@@ -251,24 +252,81 @@ export class Paquet {
         }
     }
 
-    getMeilleureCarte(action) {
+    getMeilleureCarte(action, atout) {
         const cartes = action.joueur.cartes;
         // 1re main, 1re carte
         if (action.cptCarte === 0 && action.cptJoueur === 0) {
             const cartesAs = cartes.filter(c => c.symbole === Symbole.AS);
-            const cartesBeu = cartes.filter(c => c.symbole === Symbole.ROI);
-            const cartes10 = cartes.filter(c => c.symbole === Symbole.DIX);
+            const cartesBeu = cartes.filter(c => c.symbole === Symbole.ROI)
+
+            // Cherche une pair beu-as (pas d'atout)
             for (let as of cartesAs) {
                 if (!as.isAtout()) {
                     const beuMemeSorte = cartesBeu.find(c => c.sorte === as.sorte);
                     if (beuMemeSorte !== undefined) {
+                        // Joue le beu
                         return beuMemeSorte;
                     }
+                    // Joue l'as
                     return as;
                 }
             }
-            return cartes[0];
+            // Cherche une carte sèche (sauf atout)
+            const cartesSeches = cartes.filter(c => c.isSeche(cartes, atout) && !c.isAtout(atout));
+            const chiensSecs = cartesSeches.filter(c => c.isChien(atout, true));
+            if (chiensSecs.length > 0) {
+                // Priorise les chiens
+                return this.piger(chiensSecs, 'min');
+            }
+            const dixSecs = cartesSeches.filter(c => c.poids === 10);
+            if (dixSecs.length > 0) {
+                // Priorise 10
+                return this.piger(dixSecs);
+            }
+            const beuxSecs = cartesSeches.filter(c => c.symbole === Symbole.ROI);
+            if (beuxSecs.length > 0) {
+                // Priorise beu
+                return this.piger(beuxSecs);
+            }
+
+            // Cherche un chien
+            let chiens = cartes.filter(c => c.isChien(atout, false));
+            if (chiens.length > 0) {
+                // Priorise les basses cartes
+                return this.piger(chiens, 'min');
+            }
+            chiens = cartes.filter(c => c.isChien(atout, true));
+            if (chiens.length > 0) {
+                // Autorise les plus hautes
+                return this.piger(chiens, 'min');
+            }
         }
         return cartes.find(c => !c.isDisabled());
+    }
+
+    piger(cartes, contrainte) { 
+        let choix = [];
+        switch (contrainte) {
+            case undefined: {
+                choix = cartes;
+                break;
+            }
+            case 'min': {
+                const minVal = Math.min(cartes.map(c => c.poids));
+                choix = cartes.filter(c => c.poids === minVal);
+                break;
+            }
+            case 'max': {
+                const minVal = Math.min(cartes.map(c => c.poids));
+                choix = cartes.filter(c => c.poids === minVal);
+                break;
+            }
+        }
+        const idx = Math.floor(Math.random() * choix.length);
+        return cartes[idx];
+    }
+
+    getCarte(poids, sorte) {
+        return this.cartes.find(c => c.sorte === sorte && c.poids === poids);
     }
 }

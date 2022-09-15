@@ -11,6 +11,8 @@ import { Action, ActionType } from "./models/action";
 import { Partie } from "./models/partie";
 import { Paquet } from "./models/paquet";
 import { ScoreComponent } from "./components/score-component";
+import { TestComponent } from "./tests/test-component";
+import { Tests } from "./tests/tests";
 
 const { Header, Content } = Layout;
 
@@ -21,6 +23,7 @@ class App extends Component {
     const paquet = new Paquet(avecQuettee);
     this.scoreRef = React.createRef();
     this.tableRef = React.createRef();
+    this.testRef = React.createRef();
     this.state = {
       action: new Action(),
       avecQuettee: avecQuettee,
@@ -28,6 +31,7 @@ class App extends Component {
       ouvert: true,
       showGager: false,
       showScore: false,
+      showTest: false,
       mise: null,
       paquet: paquet,
       choisirAtout: false,
@@ -38,6 +42,7 @@ class App extends Component {
     this.joueurs = [];
     this.attendre = false;
     this.atoutConnu = false;;
+    this.test = '';
   }
 
   componentDidMount() {
@@ -104,6 +109,12 @@ class App extends Component {
     });
   }
 
+  onTest = () => {
+    this.setState({
+      showTest: true,
+    });
+  }
+
   onGagerOk = (e) => {
     this.setState({
       showGager: false,
@@ -132,6 +143,21 @@ class App extends Component {
     this.setState({
       showScore: false,
     });
+  }  
+
+  onTestOk = (e) => {
+    this.setState({
+      showTest: false,
+    });
+    
+    const tests = new Tests();
+    tests.runTest(this.testRef.current.test);
+  }
+
+  onTestCancel = (e) => {
+    this.setState({
+      showTest: false,
+    });
   }
 
   nextAction() {
@@ -157,7 +183,7 @@ class App extends Component {
 
     if (action.type === ActionType.JOUER && action.joueur.index !== 0 && this.state.auto) {
       setTimeout(() => {
-        this.tableRef.current.onCliqueCarte(this.state.paquet.getMeilleureCarte(action));
+        this.tableRef.current.onCliqueCarte(this.state.paquet.getMeilleureCarte(action, this.state.mise.atout));
         paquet.attendre = false;
       }, 500);
     }
@@ -230,6 +256,7 @@ class App extends Component {
                 <Button type="primary" onClick={() => this.onBrasser()}>Brasser</Button>
                 <Button style={{ marginTop: '15px' }} type="primary" onClick={() => this.onGager()}>Gager</Button>
                 <Button style={{ marginTop: '15px' }} type="primary" onClick={() => this.onScore()}>Score</Button>
+                <Button style={{ marginTop: '15px' }} type="primary" onClick={() => this.onTest()}>Test</Button>
               </div>
               {/* Table */}
               <div className="App-center" style={{ marginTop: '-60px', height: '100vh' }}>
@@ -253,6 +280,15 @@ class App extends Component {
               >
                 <ScoreComponent brasses={this.partie.brasses}
                   ref={this.scoreRef}></ScoreComponent>
+              </Modal>
+              {/* Test */}
+              <Modal styles={this.bg}
+                title="Test"
+                visible={this.state.showTest}
+                onOk={this.onTestOk}
+                onCancel={this.onTestCancel}
+              >
+                <TestComponent ref={this.testRef} test={this.test}></TestComponent>
               </Modal>
             </div>
           }

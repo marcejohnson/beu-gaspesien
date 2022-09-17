@@ -301,7 +301,7 @@ export class Paquet {
                 return this.piger(chiens, 'min');
             }
         }
-        return cartes.find(c => !c.isDisabled());
+        return cartes.find(c => !c.isDisabled(cartes, this.sorteDemandee, atout));
     }
 
     piger(cartes, contrainte) { 

@@ -307,10 +307,6 @@ export class Paquet {
     piger(cartes, contrainte) { 
         let choix = [];
         switch (contrainte) {
-            case undefined: {
-                choix = cartes;
-                break;
-            }
             case 'min': {
                 const minVal = Math.min(cartes.map(c => c.poids));
                 choix = cartes.filter(c => c.poids === minVal);
@@ -319,6 +315,10 @@ export class Paquet {
             case 'max': {
                 const minVal = Math.min(cartes.map(c => c.poids));
                 choix = cartes.filter(c => c.poids === minVal);
+                break;
+            }
+            default: {
+                choix = cartes;
                 break;
             }
         }

@@ -13,8 +13,8 @@ export class TestComponent extends Component {
         this.test = this.tests[0].props.children;
     }
 
-    onOk(test) {
-        this.test = this.tests[test.key].props.children;
+    onChange(test) {
+        this.test = this.tests[String(test)].props.children;
     }    
 
     render() {
@@ -32,7 +32,7 @@ export class TestComponent extends Component {
                 >
                     <Form.Item label="Test" required style={{width: '600px'}}>
                         {/* Joueur */}
-                        <Select allowClear onChange={(test) => this.onOk(test)} defaultValue={this.tests[0]}>
+                        <Select allowClear onChange={(test) => this.onChange(test)} defaultValue={this.tests[0]}>
                             {this.tests}
                         </Select>
                     </Form.Item>                    

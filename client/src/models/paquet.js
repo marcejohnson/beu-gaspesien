@@ -1,6 +1,7 @@
 import { ActionType } from "./action";
 import { Carte, Sorte, Symbole } from "./carte";
 import { Joueur } from "./joueur";
+import { MeilleureCarte } from "./meilleure-carte";
 
 export class Paquet {
     constructor(avecQuettee) {
@@ -254,76 +255,12 @@ export class Paquet {
 
     getMeilleureCarte(action, atout) {
         const cartes = action.joueur.cartes;
+        const meilleureCarte = new MeilleureCarte(cartes, atout, this.sorteDemandee);
         // 1re main, 1re carte
         if (action.cptCarte === 0 && action.cptJoueur === 0) {
-            const cartesAs = cartes.filter(c => c.symbole === Symbole.AS);
-            const cartesBeu = cartes.filter(c => c.symbole === Symbole.ROI)
-
-            // Cherche une pair beu-as (pas d'atout)
-            for (let as of cartesAs) {
-                if (!as.isAtout()) {
-                    const beuMemeSorte = cartesBeu.find(c => c.sorte === as.sorte);
-                    if (beuMemeSorte !== undefined) {
-                        // Joue le beu
-                        return beuMemeSorte;
-                    }
-                    // Joue l'as
-                    return as;
-                }
-            }
-            // Cherche une carte sèche (sauf atout)
-            const cartesSeches = cartes.filter(c => c.isSeche(cartes, atout) && !c.isAtout(atout));
-            const chiensSecs = cartesSeches.filter(c => c.isChien(atout, true));
-            if (chiensSecs.length > 0) {
-                // Priorise les chiens
-                return this.piger(chiensSecs, 'min');
-            }
-            const dixSecs = cartesSeches.filter(c => c.poids === 10);
-            if (dixSecs.length > 0) {
-                // Priorise 10
-                return this.piger(dixSecs);
-            }
-            const beuxSecs = cartesSeches.filter(c => c.symbole === Symbole.ROI);
-            if (beuxSecs.length > 0) {
-                // Priorise beu
-                return this.piger(beuxSecs);
-            }
-
-            // Cherche un chien
-            let chiens = cartes.filter(c => c.isChien(atout, false));
-            if (chiens.length > 0) {
-                // Priorise les basses cartes
-                return this.piger(chiens, 'min');
-            }
-            chiens = cartes.filter(c => c.isChien(atout, true));
-            if (chiens.length > 0) {
-                // Autorise les plus hautes
-                return this.piger(chiens, 'min');
-            }
+            return meilleureCarte.getMain1Cart1();
         }
         return cartes.find(c => !c.isDisabled(cartes, this.sorteDemandee, atout));
-    }
-
-    piger(cartes, contrainte) { 
-        let choix = [];
-        switch (contrainte) {
-            case 'min': {
-                const minVal = Math.min(cartes.map(c => c.poids));
-                choix = cartes.filter(c => c.poids === minVal);
-                break;
-            }
-            case 'max': {
-                const minVal = Math.min(cartes.map(c => c.poids));
-                choix = cartes.filter(c => c.poids === minVal);
-                break;
-            }
-            default: {
-                choix = cartes;
-                break;
-            }
-        }
-        const idx = Math.floor(Math.random() * choix.length);
-        return cartes[idx];
     }
 
     getCarte(poids, sorte) {

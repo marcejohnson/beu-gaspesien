@@ -175,7 +175,6 @@ class App extends Component {
       }, 500);
     }
     if (action.type === ActionType.BRASSER) {
-      debugger
       this.partie.nextBrasse(this.state.paquet.points, this.state.mise);
       this.setState({ showScore: true },
         this.onScore);

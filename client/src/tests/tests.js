@@ -1,26 +1,24 @@
 import { TestCarte } from "./test-carte";
 import { TestJoueur } from "./test-joueur";
+import { TestMeilleureCarte } from "./test-meilleure-carte";
 
 export const TestType = {
-    CARTE: 'CARTE', JOUEUR: 'JOUEUR'
+    ALL: 'ALL', CARTE: 'CARTE', JOUEUR: 'JOUEUR', MEILLEURE_CARTE: 'MEILLEURE_CARTE'
 }
 
 export class Tests {
     runTest(test) {
-        switch (test) {
-            case TestType.CARTE: {
-                const testCarte = new TestCarte();
-                testCarte.runAll();
-                break;
-            }
-            case TestType.JOUEUR: {
-                const testJoueur = new TestJoueur();
-                testJoueur.runAll();
-                break;
-            }
-            default: {
-                break;
-            }
+        if (test === TestType.ALL || test === TestType.CARTE) {
+            const testCarte = new TestCarte();
+            testCarte.runAll();
+        } 
+        if (test === TestType.ALL || test === TestType.JOUEUR) {
+            const testJoueur = new TestJoueur();
+            testJoueur.runAll();
+        }        
+        if (test === TestType.ALL || test === TestType.MEILLEURE_CARTE) {
+            const testMeilleure = new TestMeilleureCarte();
+            testMeilleure.runAll();
         }
     }
 }

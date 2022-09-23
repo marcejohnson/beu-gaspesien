@@ -114,14 +114,13 @@ export class MeilleureCarte {
             return this.piger(chiensMinRatio.map(c => c.chien), 'min');
         }
 
-        // Regarde si bien positionné pour faire tomber atout
-
-        // Joue un 10
-        const dix = this.cartes.filter(c => c.poids === 10);
+        // Joue un 10 qui n'est pas de l'atout
+        const dix = this.cartes.filter(c => c.poids === 10 && !c.isAtout(this.atout));
         if (dix.length > 0) {
             return this.piger(dix);
         }
 
-        return this.piger(this.cartes, 'min');
+        // À ce stade-ci, il ne reste que de l'atout, jouer la plus forte
+        return this.cartes[this.cartes.length - 1];
     }
 }

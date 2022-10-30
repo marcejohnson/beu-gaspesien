@@ -24,6 +24,10 @@ export class MiseComponent extends Component {
         this.atoutsList.map((item, index) => 
             this.atouts.push(<Select.Option key={index}>{item}</Select.Option>)
         );
+
+        this.onAtout(0);
+        this.onJoueur(0);
+        this.onMontant(60);
     }
 
     onJoueur(idx) {

@@ -159,6 +159,7 @@ export class Paquet {
                 case ActionType.JOUER: {
                     const joueurIdx = action.joueur.getIndex();
                     this.main[joueurIdx] = carte.copy();
+                    this.pile.push(carte);
                     const idx = joueur.cartes.findIndex((item) => item.key === carte.key);
                     joueur.cartes.splice(idx, 1);
                     break;
@@ -168,19 +169,19 @@ export class Paquet {
         }
     }
 
-    getRemporteur(mise, mainDeTable) {
+    getCarteLead(atout, petite) {
         let carteGagnante = this.main[0];
         let remporteur = this.joueur1;
         for (let i = 1; i < 4; ++i) {
             let carte = this.main[i];
-            if (carte.isAtout(mise.atout) && !carteGagnante.isAtout(mise.atout)) {
+            if (carte.isAtout(atout) && !carteGagnante.isAtout(atout)) {
                 carteGagnante = carte;
                 remporteur = this.getJoueurParIdx(i);
-            } else if (carte.sorte === this.sorteDemandee && carteGagnante.sorte !== this.sorteDemandee && !carteGagnante.isAtout(mise.atout)) {
+            } else if (carte.sorte === this.sorteDemandee && carteGagnante.sorte !== this.sorteDemandee && !carteGagnante.isAtout(atout)) {
                 carteGagnante = carte;
                 remporteur = this.getJoueurParIdx(i);
-            } else if (carte.sorte === carteGagnante.sorte || (carte.isAtout(mise.atout) && carteGagnante.isAtout(mise.atout))) {
-                if (mise.petite) {
+            } else if (carte.sorte === carteGagnante.sorte || (carte.isAtout(atout) && carteGagnante.isAtout(atout))) {
+                if (petite) {
                     if (carte.rang < carteGagnante.rang) {
                         carteGagnante = carte;
                         remporteur = this.getJoueurParIdx(i);
@@ -197,11 +198,17 @@ export class Paquet {
         for (let carte of this.main) {
             points += carte.points;
         }
-        this.points[remporteur.equipeIdx] += points;
+        return { carte: carteGagnante, joueur: remporteur, points: points };
+    }
+
+    getRemporteur(mise, mainDeTable) {
+        const lead = this.getCarteLead(mise.atout, mise.petite);
+
+        this.points[lead.joueur.equipeIdx] += lead.points;
         if (mainDeTable) {
-            this.points[remporteur.equipeIdx] += 10;
+            this.points[lead.joueur.equipeIdx] += 10;
         }
-        return remporteur;
+        return lead.joueur;
     }
 
     trierBibittes(mise) {
@@ -253,12 +260,17 @@ export class Paquet {
         }
     }
 
-    getMeilleureCarte(action, atout) {
+    getMeilleureCarte(action, atout, petite) {
         const cartes = action.joueur.cartes;
-        const meilleureCarte = new MeilleureCarte(cartes, atout, this.sorteDemandee);
+        const meilleureCarte = new MeilleureCarte();
         // 1re main, 1re carte
         if (action.cptCarte === 0 && action.cptJoueur === 0) {
-            return meilleureCarte.getMain1Cart1();
+            return meilleureCarte.getMain1Carte1(cartes, atout);
+        }
+        // Dernière carte de la main
+        if (action.cptCarte === 3) {
+            const lead = this.getCarteLead(atout, petite);
+            return meilleureCarte.getCarte4(this.sorteDemandee, cartes);
         }
         return cartes.find(c => !c.isDisabled(cartes, this.sorteDemandee, atout));
     }

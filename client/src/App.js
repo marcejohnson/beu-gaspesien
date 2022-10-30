@@ -182,7 +182,7 @@ class App extends Component {
 
     if (action.type === ActionType.JOUER && action.joueur.index !== 0 && this.state.auto) {
       setTimeout(() => {
-        this.tableRef.current.onCliqueCarte(this.state.paquet.getMeilleureCarte(action, this.state.mise.atout));
+        this.tableRef.current.onCliqueCarte(this.state.paquet.getMeilleureCarte(action, this.state.mise.atout, this.state.mise.petite));
         paquet.attendre = false;
       }, 500);
     }

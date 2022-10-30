@@ -1,6 +1,6 @@
 import { TestCarte } from "./test-carte";
 import { TestJoueur } from "./test-joueur";
-import { TestMeilleureCarte } from "./test-meilleure-carte";
+import { TestMeilleureCarte } from "./test-meilleure-carte/test-meilleure-carte";
 
 export const TestType = {
     ALL: 'ALL', CARTE: 'CARTE', JOUEUR: 'JOUEUR', MEILLEURE_CARTE: 'MEILLEURE_CARTE'

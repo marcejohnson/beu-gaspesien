@@ -240,6 +240,7 @@ export class Paquet {
             }
         }
 
+        debugger
         const joker = this.cartes.find(carte => carte.sorte === Sorte.JOKER);
         const blanche = this.cartes.find(carte => carte.sorte === Sorte.BLANCHE);
 

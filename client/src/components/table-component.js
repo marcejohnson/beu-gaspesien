@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, message } from 'antd';
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import { CartesComponent } from './cartes-component';
 import { JoueurComponent } from './joueur-component';
 import { ActionType } from '../models/action';
@@ -47,31 +47,31 @@ export class TableComponent extends Component {
             <div>
                 {/* Partenaire */}
                 <div style={{ marginBottom: '60px' }}>
-                    <JoueurComponent mise={this.props.mise} sorteDemandee={this.props.paquet.sorteDemandee} action={this.props.action} cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.props.paquet.getJoueur3()}></JoueurComponent>
+                    <JoueurComponent mise={this.props.mise} sorteDemandee={this.props.paquet.sorteDemandee}  action={this.props.action} cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} auto={this.props.auto} joueur={this.props.paquet.getJoueur3()}></JoueurComponent>
                 </div>
                 {/* Adversaires et Quettée */}
                 <Row style={{ marginTop: '0px', marginBottom: '30px' }}>
                     {/* Gauche */}
                     <Col style={{ marginRight: '120px' }}>
-                        <JoueurComponent mise={this.props.mise} sorteDemandee={this.props.paquet.sorteDemandee} action={this.props.action} cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.props.paquet.getJoueur2()}></JoueurComponent>
+                        <JoueurComponent mise={this.props.mise} sorteDemandee={this.props.paquet.sorteDemandee} action={this.props.action} cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} auto={this.props.auto} joueur={this.props.paquet.getJoueur2()}></JoueurComponent>
                     </Col>
                     {/* Quettée */}
                     {
                         (this.props.avecQuettee && this.props.action.type === ActionType.GAGER) &&
                         <Col style={{ marginTop: '38px' }} onClick={this.onQuettee}>
-                            <CartesComponent action={this.props.action} actif={false} ouvert={this.props.ouvert} cartes={this.props.paquet.getQuettee()}></CartesComponent>
+                            <CartesComponent action={this.props.action} actif={false} ouvert={this.props.ouvert} auto={this.props.auto} cartes={this.props.paquet.getQuettee()}></CartesComponent>
                         </Col>
                     }
                     {/* Main */}
                     {
                         (this.props.action.type === ActionType.JOUER || this.props.action.type === ActionType.REMPORTER) &&
                         <Col>
-                            <MainComponent paquet={this.props.paquet} ouvert={this.props.ouvert}></MainComponent>
+                            <MainComponent paquet={this.props.paquet} ouvert={this.props.ouvert} auto={this.props.auto}></MainComponent>
                         </Col>
                     }
                     {/* Droite */}
                     <Col style={{ marginLeft: '120px' }}>
-                        <JoueurComponent mise={this.props.mise} sorteDemandee={this.props.paquet.sorteDemandee} action={this.props.action} cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} joueur={this.props.paquet.getJoueur4()}></JoueurComponent>
+                        <JoueurComponent mise={this.props.mise} sorteDemandee={this.props.paquet.sorteDemandee} action={this.props.action} cliqueCarte={(carte) => this.onCliqueCarte(carte)} ouvert={this.props.ouvert} auto={this.props.auto} joueur={this.props.paquet.getJoueur4()}></JoueurComponent>
                     </Col>
                 </Row>
                 {/* Moi */}

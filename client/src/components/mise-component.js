@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Form, InputNumber, Select, Radio } from 'antd';
 
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import { Sorte } from '../models/carte';
 import { Montant } from '../models/mise';
 
@@ -25,7 +25,7 @@ export class MiseComponent extends Component {
             this.atouts.push(<Select.Option key={index}>{item}</Select.Option>)
         );
 
-        this.onAtout(0);
+        this.onAtout(1);
         this.onJoueur(0);
         this.onMontant(60);
     }

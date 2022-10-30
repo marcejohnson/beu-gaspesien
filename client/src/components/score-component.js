@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Table } from 'antd';
 
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 
 export class ScoreComponent extends Component {
     constructor(props) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Button, Form, Input, message } from 'antd';
 
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import bcrypt from 'bcryptjs';
 
 export class LoginComponent extends Component {

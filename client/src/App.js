@@ -3,7 +3,7 @@ import "./App.css";
 
 import { TableComponent } from "./components/table-component";
 import { Modal, Layout, Col, Row, Switch, Button } from "antd";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import { LoginComponent } from "./components/login-component";
 import { MiseComponent } from "./components/mise-component";
 import { Mise } from "./models/mise";
@@ -259,7 +259,7 @@ class App extends Component {
               </div>
               {/* Table */}
               <div className="App-center" style={{ marginTop: '-60px', height: '100vh' }}>
-                <TableComponent ref={this.tableRef} paquet={this.state.paquet} action={this.state.action} nextAction={this.onNextAction} mise={this.state.mise} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
+                <TableComponent ref={this.tableRef} auto={this.state.auto} paquet={this.state.paquet} action={this.state.action} nextAction={this.onNextAction} mise={this.state.mise} ouvert={this.state.ouvert} avecQuettee={this.state.avecQuettee}></TableComponent>
               </div>
               {/* Gager */}
               <Modal styles={this.bg}

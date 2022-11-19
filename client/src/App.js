@@ -85,9 +85,9 @@ class App extends Component {
     this.setState({ loggedIn: true });
   }
 
-  onGager = () => {
+  onGager() {
     let mise;
-    if (this.state.mise === null) {
+    if (this.state.mise === null || this.state.action.type === ActionType.GAGER) {
       mise = new Mise();
       this.setState({
         mise: mise

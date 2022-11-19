@@ -91,7 +91,6 @@ export class IsCarteMaitre {
         ]
         const atout = Sorte.TREFLE;
         const meilleure = new MeilleureCarte();
-        debugger
         const ok = meilleure.isCarteMaitre(paquet.getCarte(16, Sorte.BLANCHE), cartes, paquet.pile, atout);
         console.log(`${ok}: TestMeilleureCarte: isCarteMaitre: maitreAbsoluAtout`);
     }    

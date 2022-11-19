@@ -1,4 +1,4 @@
-import { Symbole } from "./carte";
+import { Carte, Sorte, Symbole } from "./carte";
 
 class AsInfo {
     constructor(as) {
@@ -54,7 +54,7 @@ export class MeilleureCarte {
         return cartes[0];
     }
 
-    getMain1Carte1(mesCartes, atout) {
+    getMain1Carte1(mesCartes, atout, pile) {
         const cartesAs = mesCartes.filter(c => c.symbole === Symbole.AS);
         const cartesBeu = mesCartes.filter(c => c.symbole === Symbole.ROI)
 
@@ -99,7 +99,7 @@ export class MeilleureCarte {
         }
 
         // Cherche un chien
-        const chien = this.getMeilleurChien(mesCartes, atout,[],[]);
+        const chien = this.getMeilleurChien(mesCartes, atout,pile,[]);
         if (chien === !null) {
             return chien;
         }
@@ -145,7 +145,7 @@ export class MeilleureCarte {
         return null;
     }
 
-    getMeilleurChien(mesCartes, atout, pile, cartes) {
+    getMeilleurChien(mesCartes, atout, pile) {
         let chiens = mesCartes.filter(c => c.isChien(atout, true));
         
         let ratios = [];
@@ -155,7 +155,7 @@ export class MeilleureCarte {
                 const pointsSorte = mesCartes.filter(c => c.sorte === chien.sorte && c.points > 0);
                 let totPoints = 0;
                 for (let p of pointsSorte) {
-                    const maitre = this.isCarteMaitre(p, mesCartes, atout, pile, cartes);
+                    const maitre = this.isCarteMaitre(p, mesCartes, pile, atout);
                     totPoints += p.points;
                 }
                 const chiensSorte = chiens.filter(c => c.sorte === chien.sorte);
@@ -185,8 +185,25 @@ export class MeilleureCarte {
      * Teste si la carte est maître
      * @param carte: carte à tester
      */
-    isCarteMaitre(carte, mesCartes, atout, pile, cartes) {
-        const cartesMeilleures = cartes.filter(c => c.isSorteDemandee(carte.sorte,atout) && c.poids > carte.poids);
+    isCarteMaitre(carte, mesCartes, pile, atout) {
+        let cartesMeilleures = [];
+        for (let i = carte.poids + 1; i <= 14; ++i) {
+            const c = new Carte();
+            c.setFromPoids(i, carte.sorte);
+            cartesMeilleures.push(c);
+        }
+        if (carte.isAtout(atout)) {
+            if (!carte.isBlanche()) {
+                const c1 = new Carte();                
+                c1.setBlanche();
+                cartesMeilleures.push(c1);
+                if (!carte.isJoker()) {
+                    const c2 = new Carte();
+                    c2.setJoker();
+                    cartesMeilleures.push(c2);
+                }                
+            } 
+        }
         for (let mCarte of cartesMeilleures) {
             const cPile = pile.find(c => c.key === mCarte.key);
             const cMoi = mesCartes.find(c => c.key === mCarte.key);

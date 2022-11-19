@@ -1,4 +1,4 @@
-import { Sorte } from "../models/carte";
+import { Carte, Couleur, Sorte } from "../models/carte";
 import { Paquet } from "../models/paquet";
 
 export class TestCarte {
@@ -17,6 +17,9 @@ export class TestCarte {
 
         const isDisabled = new IsDisabled();
         isDisabled.runAll();
+
+        const setFromPoids = new SetFromPoids();
+        setFromPoids.runAll();
     }
 }
 
@@ -37,15 +40,15 @@ export class IsChien {
     }
 
     // Une bibitte n'est pas un chien
-    bibitte(){
+    bibitte() {
         const carte1 = this.paquet.getCarte(15, Sorte.JOKER);
         const carte2 = this.paquet.getCarte(16, Sorte.BLANCHE);
         const ok = !carte1.isChien(Sorte.PIQUE, true) && !carte2.isChien(Sorte.PIQUE, true);
         console.log(`${ok}: TestCarte: IsChien: bibitte`);
-    }    
+    }
 
     // Une bibitte sans atout est un chien
-    bibitteSansAtout(){
+    bibitteSansAtout() {
         const carte1 = this.paquet.getCarte(15, Sorte.JOKER);
         const carte2 = this.paquet.getCarte(16, Sorte.BLANCHE);
         const ok = carte1.isChien(Sorte.SANS_ATOUT, true) && carte2.isChien(Sorte.SANS_ATOUT, true);
@@ -53,7 +56,7 @@ export class IsChien {
     }
 
     // Un point n'est pas un chien
-    point(){
+    point() {
         const carte1 = this.paquet.getCarte(10, Sorte.PIQUE);
         const carte2 = this.paquet.getCarte(13, Sorte.PIQUE);
         const ok = !carte1.isChien(Sorte.COEUR, true) && !carte2.isChien(Sorte.COEUR, true);
@@ -61,7 +64,7 @@ export class IsChien {
     }
 
     // Un as n'est pas un chien
-    as(){
+    as() {
         const carte = this.paquet.getCarte(14, Sorte.PIQUE);
         const ok = !carte.isChien(Sorte.COEUR, true);
         console.log(`${ok}: TestCarte: IsChien: as`);
@@ -77,14 +80,14 @@ export class IsChien {
     }
 
     // Un chien d'atout n'est plus un chien
-    atout(){
+    atout() {
         const carte = this.paquet.cartes.find(c => c.sorte === Sorte.PIQUE && c.poids === 7);
         const ok = !carte.isChien(Sorte.PIQUE, true);
         console.log(`${ok}: TestCarte: IsChien: atout`);
     }
 
     // Jack et Dame ne sont pas des chiens si le 10 n'est pas passé
-    jackDame10PasPasse(){
+    jackDame10PasPasse() {
         const carte1 = this.paquet.cartes.find(c => c.sorte === Sorte.PIQUE && c.poids === 11);
         const carte2 = this.paquet.cartes.find(c => c.sorte === Sorte.PIQUE && c.poids === 12);
         const ok = !carte1.isChien(Sorte.COEUR, false) && !carte2.isChien(Sorte.COEUR, false);
@@ -92,7 +95,7 @@ export class IsChien {
     }
 
     // Jack et Dame sont  des chiens si le 10 est passé
-    jackDame10Passe(){
+    jackDame10Passe() {
         const carte1 = this.paquet.cartes.find(c => c.sorte === Sorte.PIQUE && c.poids === 11);
         const carte2 = this.paquet.cartes.find(c => c.sorte === Sorte.PIQUE && c.poids === 12);
         const ok = carte1.isChien(Sorte.COEUR, true) && carte2.isChien(Sorte.COEUR, true);
@@ -113,7 +116,7 @@ export class IsSeche {
     }
 
     // Carte sèche
-    seche(){
+    seche() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
         const cartes = [
             this.paquet.getCarte(10, Sorte.COEUR),
@@ -125,7 +128,7 @@ export class IsSeche {
     }
 
     // Carte pas sèche
-    pasSeche(){
+    pasSeche() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
         const cartes = [
             this.paquet.getCarte(10, Sorte.COEUR),
@@ -134,10 +137,10 @@ export class IsSeche {
         ];
         const ok = !carte.isSeche(cartes, Sorte.TREFLE);
         console.log(`${ok}: TestCarte: isSeche: pasSeche`);
-    }    
+    }
 
     // Pas sèche si atout en présence de bibittes
-    pasSecheBibitte(){
+    pasSecheBibitte() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
         const cartes = [
             this.paquet.getCarte(10, Sorte.COEUR),
@@ -164,43 +167,43 @@ export class IsAtout {
     }
 
     // Carte d'atout
-    atout(){
+    atout() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
-        
+
         const ok = carte.isAtout(Sorte.PIQUE);
         console.log(`${ok}: TestCarte: IsAtout: atout`);
     }
 
     // Carte pas d'atout
-    pasAtout(){
+    pasAtout() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
-        
+
         const ok = !carte.isAtout(Sorte.TREFLE);
         console.log(`${ok}: TestCarte: IsAtout: pasAtout`);
     }
 
     // Bibittes d'atout
-    atoutBibitte(){
+    atoutBibitte() {
         const carte1 = this.paquet.getCarte(15, Sorte.JOKER);
         const carte2 = this.paquet.getCarte(16, Sorte.BLANCHE);
-        
+
         const ok = carte1.isAtout(Sorte.PIQUE) && carte2.isAtout(Sorte.PIQUE);
         console.log(`${ok}: TestCarte: IsAtout: atoutBibitte`);
     }
 
     // Bibittes sans atout
-    pasAtoutBibitte(){
+    pasAtoutBibitte() {
         const carte1 = this.paquet.getCarte(15, Sorte.JOKER);
         const carte2 = this.paquet.getCarte(16, Sorte.BLANCHE);
-        
+
         const ok = !carte1.isAtout(Sorte.SANS_ATOUT) && !carte2.isAtout(Sorte.SANS_ATOUT);
         console.log(`${ok}: TestCarte: IsAtout: pasAtoutBibitte`);
-    }    
+    }
 
     // Sans atout
-    sansAtout(){
+    sansAtout() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
-        
+
         const ok = !carte.isAtout(Sorte.SANS_ATOUT);
         console.log(`${ok}: TestCarte: IsAtout: sansAtout`);
     }
@@ -219,35 +222,35 @@ export class IsSorteDemandee {
     }
 
     // Sorte demandee
-    demandee(){
+    demandee() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
-        
+
         const ok = carte.isSorteDemandee(Sorte.PIQUE, Sorte.Pique);
         console.log(`${ok}: TestCarte: IsSorteDemandee: demandee`);
     }
 
     // Pas sorte demandee
-    pasDemandee(){
+    pasDemandee() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
-        
+
         const ok = carte.isSorteDemandee(Sorte.PIQUE, Sorte.TREFLE);
         console.log(`${ok}: TestCarte: IsSorteDemandee: pasDemandee`);
     }
 
     // Bibitte et atout demande
-    atoutDemandeBibitte(){
+    atoutDemandeBibitte() {
         const carte1 = this.paquet.getCarte(15, Sorte.JOKER);
         const carte2 = this.paquet.getCarte(16, Sorte.BLANCHE);
-        
+
         const ok = carte1.isSorteDemandee(Sorte.PIQUE, Sorte.PIQUE) && carte2.isSorteDemandee(Sorte.PIQUE, Sorte.PIQUE);
         console.log(`${ok}: TestCarte: IsSorteDemandee: atoutDemandeBibitte`);
     }
 
     // Bibittes sans atout
-    pasAtoutBibitte(){
+    pasAtoutBibitte() {
         const carte1 = this.paquet.getCarte(15, Sorte.JOKER);
         const carte2 = this.paquet.getCarte(16, Sorte.BLANCHE);
-        
+
         const ok = !carte1.isAtout(Sorte.SANS_ATOUT) && !carte2.isAtout(Sorte.SANS_ATOUT);
         console.log(`${ok}: TestCarte: IsSorteDemandee: pasAtoutBibitte`);
     }
@@ -263,34 +266,34 @@ export class IsDisabled {
         this.sorteDemandee();
         this.autreSorteADemandee();
         this.autreSorteAPasDemandee();
-        this.atoutDemandeBibitte();        
+        this.atoutDemandeBibitte();
         this.atoutPasDemandeBibitte();
         this.pasSorteDemandee();
     }
 
     // Carte de la sorte demandee
-    sorteDemandee(){
+    sorteDemandee() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
         const cartes = [carte, this.paquet.getCarte(8, Sorte.COEUR), this.paquet.getCarte(10, Sorte.PIQUE)];
-        
+
         const ok = !carte.isDisabled(cartes, Sorte.PIQUE, Sorte.COEUR);
         console.log(`${ok}: TestCarte: IsDisabled: sorteDemandee`);
     }
 
     // Carte pas de la sorte demandee et a la sorte demandee
-    autreSorteADemandee(){
+    autreSorteADemandee() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
         const cartes = [carte, this.paquet.getCarte(8, Sorte.PIQUE), this.paquet.getCarte(10, Sorte.TREFLE)];
-        
+
         const ok = carte.isDisabled(cartes, Sorte.TREFLE, Sorte.COEUR);
         console.log(`${ok}: TestCarte: IsDisabled: autreSorteADemandee`);
-    }    
+    }
 
     // Carte pas de la sorte demandee et n'a pas la sorte demandee
-    autreSorteAPasDemandee(){
+    autreSorteAPasDemandee() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
         const cartes = [carte, this.paquet.getCarte(8, Sorte.PIQUE), this.paquet.getCarte(10, Sorte.COEUR)];
-        
+
         const ok = !carte.isDisabled(cartes, Sorte.TREFLE, Sorte.COEUR);
         console.log(`${ok}: TestCarte: IsDisabled: autreSorteAPasDemandee`);
     }
@@ -300,36 +303,54 @@ export class IsDisabled {
         const carte1 = this.paquet.getCarte(15, Sorte.JOKER);
         const carte2 = this.paquet.getCarte(16, Sorte.BLANCHE);
         const cartes = [carte1, carte2, this.paquet.getCarte(8, Sorte.COEUR), this.paquet.getCarte(10, Sorte.PIQUE)];
-        
+
         const ok = !carte1.isDisabled(cartes, Sorte.PIQUE, Sorte.PIQUE) && !carte2.isDisabled(cartes, Sorte.PIQUE, Sorte.PIQUE);;
         console.log(`${ok}: TestCarte: IsDisabled: atoutDemandeBibitte`);
-    }    
+    }
 
     // Bibitte quand atout pas demandé
-    atoutPasDemandeBibitte(){
+    atoutPasDemandeBibitte() {
         const carte1 = this.paquet.getCarte(15, Sorte.JOKER);
         const carte2 = this.paquet.getCarte(16, Sorte.BLANCHE);
         const cartes = [carte1, carte2, this.paquet.getCarte(8, Sorte.COEUR), this.paquet.getCarte(10, Sorte.PIQUE)];
-        
+
         const ok = carte1.isDisabled(cartes, Sorte.PIQUE, Sorte.COEUR) && carte2.isDisabled(cartes, Sorte.PIQUE, Sorte.COEUR);;
         console.log(`${ok}: TestCarte: IsDisabled: atoutPasDemandeBibitte`);
     }
 
     // Pas de sorte demandée
-    pasSorteDemandee(){
+    pasSorteDemandee() {
         const carte = this.paquet.getCarte(8, Sorte.PIQUE);
         const cartes = [carte, this.paquet.getCarte(8, Sorte.COEUR), this.paquet.getCarte(10, Sorte.PIQUE)];
-        
+
         const ok = !carte.isDisabled(cartes, null, Sorte.COEUR);
         console.log(`${ok}: TestCarte: IsDisabled: pasSorteDemandee`);
     }
 
     // Bibittes sans atout
-    pasAtoutBibitte(){
+    pasAtoutBibitte() {
         const carte1 = this.paquet.getCarte(15, Sorte.JOKER);
         const carte2 = this.paquet.getCarte(16, Sorte.BLANCHE);
-        
+
         const ok = !carte1.isAtout(Sorte.SANS_ATOUT) && !carte2.isAtout(Sorte.SANS_ATOUT);
         console.log(`${ok}: TestCarte: IsDisabled: pasAtoutBibitte`);
+    }
+}
+
+    // Tester la méthode Carte.setFromPoids(poids, sorte)
+export class SetFromPoids {
+    constructor() {}
+
+    runAll() {
+        this.basic();
+    }
+
+    // Test de base
+    basic() {
+        const carte = new Carte();
+        carte.setFromPoids(11, Sorte.TREFLE);
+
+        const ok = carte.key === 'J|trèfle' && carte.rang === 28 && carte.couleur === Couleur.NOIR;
+        console.log(`${ok}: TestCarte: SetFromPoids: basic`);
     }
 }

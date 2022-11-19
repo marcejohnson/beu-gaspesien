@@ -104,7 +104,7 @@ export class GetMain1Carte1 {
             this.paquet.getCarte(13, Sorte.CARREAU)
         ]
         const meilleure = new MeilleureCarte();
-        const carte = meilleure.getMain1Carte1(cartes, Sorte.TREFLE);
+        const carte = meilleure.getMain1Carte1(cartes, Sorte.TREFLE, []);
         const ok = carte.symbole === Symbole.ROI && carte.sorte === Sorte.CARREAU;
         console.log(`${ok}: TestMeilleureCarte: getMain1Carte1: beuSec`);
     }
@@ -122,8 +122,8 @@ export class GetMain1Carte1 {
             this.paquet.getCarte(13, Sorte.CARREAU)
         ]
         const meilleure = new MeilleureCarte();
-        const carte = meilleure.getMain1Carte1(cartes, Sorte.TREFLE);
-        const ok = carte.symbole === Symbole.JACK && (carte.sorte === Sorte.COEUR || cartes.sorte === Sorte.CARREAU);
+        const carte = meilleure.getMain1Carte1(cartes, Sorte.TREFLE, []);
+        const ok = carte.symbole === Symbole.JACK && cartes.sorte === Sorte.COEUR;
         console.log(`${ok}: TestMeilleureCarte: getMain1Carte1: chienPasSec`);
     } 
     

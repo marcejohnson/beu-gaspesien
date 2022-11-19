@@ -240,7 +240,6 @@ export class Paquet {
             }
         }
 
-        debugger
         const joker = this.cartes.find(carte => carte.sorte === Sorte.JOKER);
         const blanche = this.cartes.find(carte => carte.sorte === Sorte.BLANCHE);
 
@@ -266,7 +265,7 @@ export class Paquet {
         const meilleureCarte = new MeilleureCarte();
         // 1re main, 1re carte
         if (action.cptCarte === 0 && action.cptJoueur === 0) {
-            return meilleureCarte.getMain1Carte1(cartes, atout);
+            return meilleureCarte.getMain1Carte1(cartes, atout, this.pile, this.cartes);
         }
         // Dernière carte de la main
         if (action.cptCarte === 3) {

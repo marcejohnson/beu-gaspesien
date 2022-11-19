@@ -8,7 +8,7 @@ export const Sorte = {
     SANS_ATOUT: 'sans atout'
 }
 
-const Couleur = {
+export const Couleur = {
     NOIR: 'black',
     ROUGE: 'red'
 }
@@ -32,7 +32,18 @@ export class Carte {
         this.symbole = symbole;
         this.surelevee = false;
         this.poids = poids;
-        
+
+        this.setImage();
+        this.couleur = this.setCouleur();
+        this.setPoints();
+    }
+
+    copy() {
+        const carte = new Carte(this.rang, this.sorte, this.symbole, this.poids);
+        return carte;
+    }
+
+    setImage() {
         switch (this.sorte) {
             case Sorte.COEUR: {
                 this.image = 'coeur.png';
@@ -63,18 +74,41 @@ export class Carte {
                 break;
             }
         }
-        this.couleur = this.sorte === Sorte.COEUR || this.sorte === Sorte.CARREAU || this.sorte === Sorte.JOKER ? Couleur.ROUGE : Couleur.NOIR;
+    }
+
+    setPoints() {        
         this.points = 0;
-        if (symbole === Symbole.DIX) {
+        if (this.symbole === Symbole.DIX) {
             this.points = 10;
         } else if (this.symbole === Symbole.ROI) {
             this.points = 25;
         }
     }
 
-    copy() {
-        const carte = new Carte(this.rang, this.sorte, this.symbole, this.poids);
-        return carte;
+    setCouleur() {
+        this.couleur = this.sorte === Sorte.COEUR || this.sorte === Sorte.CARREAU || this.sorte === Sorte.JOKER ? Couleur.ROUGE : Couleur.NOIR;
+    }
+
+    setFromPoids(poids, sorte) {
+        this.poids = poids;
+        this.sorte = sorte;
+        const symboleKey = Object.keys(Symbole)[poids - 7];
+        Object.keys(Symbole).forEach(key => {
+            if (key === symboleKey) {
+                this.symbole = Symbole[key];
+            }
+        });
+        let sorteIdx = 0;
+        Object.keys(Sorte).forEach((key, i) => {
+            if (Sorte[key] === sorte) {
+                sorteIdx = i;
+            }
+        })
+        this.rang = sorteIdx * 8 + poids - 7;
+        this.key = `${this.symbole}|${sorte}`;
+        this.setCouleur();
+        this.setImage();
+        this.setPoints();
     }
 
     isAtout(atout) {
@@ -146,5 +180,25 @@ export class Carte {
             return true;
         }
         return false;
+    }
+
+    isBlanche() {
+        return this.sorte === Sorte.BLANCHE;
+    }
+
+    isJoker() {
+        return this.sorte === Sorte.JOKER;
+    }
+
+    isBibitte() {
+        return this.isJoker() || this.isBlanche();
+    }
+
+    setJoker() {
+        this.setFromPoids(15, Sorte.JOKER);
+    }
+
+    setBlanche() {
+        this.setFromPoids(16, Sorte.BLANCHE);
     }
 }

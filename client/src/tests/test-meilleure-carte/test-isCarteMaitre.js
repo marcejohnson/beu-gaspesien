@@ -31,7 +31,7 @@ export class IsCarteMaitre {
         ]
         const atout = Sorte.PIQUE;
         const meilleure = new MeilleureCarte();
-        const ok = meilleure.isCarteMaitre(paquet.getCarte(13, Sorte.TREFLE), cartes, atout, paquet.pile, paquet.cartes);
+        const ok = meilleure.isCarteMaitre(paquet.getCarte(13, Sorte.TREFLE), cartes, paquet.pile, atout);
         console.log(`${ok}: TestMeilleureCarte: isCarteMaitre: maitreAbsolu`);
     }    
 
@@ -51,7 +51,7 @@ export class IsCarteMaitre {
         ]
         const atout = Sorte.PIQUE;
         const meilleure = new MeilleureCarte();
-        const ok = meilleure.isCarteMaitre(paquet.getCarte(12, Sorte.TREFLE), cartes, atout, paquet.pile, paquet.cartes);
+        const ok = meilleure.isCarteMaitre(paquet.getCarte(12, Sorte.TREFLE), cartes, paquet.pile, atout);
         console.log(`${ok}: TestMeilleureCarte: isCarteMaitre: maitre`);
     }     
 
@@ -71,7 +71,7 @@ export class IsCarteMaitre {
         ]
         const atout = Sorte.PIQUE;
         const meilleure = new MeilleureCarte();
-        const ok = !meilleure.isCarteMaitre(paquet.getCarte(13, Sorte.TREFLE), cartes, atout, paquet.pile, paquet.cartes);
+        const ok = !meilleure.isCarteMaitre(paquet.getCarte(13, Sorte.TREFLE), cartes, paquet.pile, atout);
         console.log(`${ok}: TestMeilleureCarte: isCarteMaitre: pasMaitre`);
     }
 
@@ -91,8 +91,9 @@ export class IsCarteMaitre {
         ]
         const atout = Sorte.TREFLE;
         const meilleure = new MeilleureCarte();
-        const ok = meilleure.isCarteMaitre(paquet.getCarte(16, Sorte.BLANCHE), cartes, atout, paquet.pile, paquet.cartes);
-        console.log(`${ok}: TestMeilleureCarte: isCarteMaitre: maitreAbsolu`);
+        debugger
+        const ok = meilleure.isCarteMaitre(paquet.getCarte(16, Sorte.BLANCHE), cartes, paquet.pile, atout);
+        console.log(`${ok}: TestMeilleureCarte: isCarteMaitre: maitreAbsoluAtout`);
     }    
 
     // La carte est bonne, mais pas la meilleure dans mon jeu, en atout
@@ -111,8 +112,8 @@ export class IsCarteMaitre {
         ]
         const atout = Sorte.PIQUE;
         const meilleure = new MeilleureCarte();
-        const ok = meilleure.isCarteMaitre(paquet.getCarte(15, Sorte.JOKER), cartes, atout, paquet.pile, paquet.cartes);
-        console.log(`${ok}: TestMeilleureCarte: isCarteMaitre: maitre`);
+        const ok = meilleure.isCarteMaitre(paquet.getCarte(15, Sorte.JOKER), cartes, paquet.pile, atout);
+        console.log(`${ok}: TestMeilleureCarte: isCarteMaitre: maitreAtout`);
     }     
 
     // La carte n'est pas maître, en atout
@@ -131,7 +132,7 @@ export class IsCarteMaitre {
         ]
         const atout = Sorte.TREFLE;
         const meilleure = new MeilleureCarte();
-        const ok = !meilleure.isCarteMaitre(paquet.getCarte(14, Sorte.TREFLE), cartes, atout, paquet.pile, paquet.cartes);
-        console.log(`${ok}: TestMeilleureCarte: isCarteMaitre: pasMaitre`);
+        const ok = !meilleure.isCarteMaitre(paquet.getCarte(14, Sorte.TREFLE), cartes, paquet.pile, atout);
+        console.log(`${ok}: TestMeilleureCarte: isCarteMaitre: pasMaitreAtout`);
     }  
 }

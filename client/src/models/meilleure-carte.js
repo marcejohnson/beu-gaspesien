@@ -45,6 +45,7 @@ export class MeilleureCarte {
     }
 
     getCarte4(sorteDemandee, atout, mesCartes) {
+        debugger
         const cartes = mesCartes.filter(c => !c.isDisabled(mesCartes, sorteDemandee, atout));
         
         const pointSec = this.getPointSec(this.getCartesSeches(cartes, atout), 13);

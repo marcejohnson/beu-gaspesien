@@ -268,7 +268,7 @@ export class Paquet {
             return meilleureCarte.getMain1Carte1(cartes, atout, this.pile, this.cartes);
         }
         // Dernière carte de la main
-        if (action.cptCarte === 3) {
+        if (action.cptJoeur === 3) {
             const lead = this.getCarteLead(atout, petite);
             return meilleureCarte.getCarte4(this.sorteDemandee, cartes);
         }

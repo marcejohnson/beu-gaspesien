@@ -47,7 +47,7 @@ class App extends Component {
 
   componentDidMount() {
     if (this.state.titre === null) {
-      fetch("/api")
+      fetch("/api/debut")
         .then((res) => res.json())
         .then((data) => {
           this.setState({ titre: data.message });
@@ -87,7 +87,8 @@ class App extends Component {
 
   onGager() {
     let mise;
-    if (this.state.mise === null || this.state.action.type === ActionType.GAGER) {
+    debugger
+    if (this.state.mise === null || this.state.action.type === ActionType.BRASSER) {
       mise = new Mise();
       this.setState({
         mise: mise
@@ -143,13 +144,13 @@ class App extends Component {
     this.setState({
       showScore: false,
     });
-  }  
+  }
 
   onTestOk = (e) => {
     this.setState({
       showTest: false,
     });
-    
+
     const tests = new Tests();
     tests.runTest(this.testRef.current.test);
   }
@@ -169,6 +170,13 @@ class App extends Component {
     });
     if (action.type === ActionType.REMPORTER) {
       paquet.attendre = true;
+      if (action.cptCarte === 8) {
+        fetch("/api/milieu")
+          .then((res) => res.json())
+          .then((data) => {
+            this.setState({ titre: data.message });
+          });
+      }
       setTimeout(() => {
         this.nextAction();
         paquet.attendre = false;

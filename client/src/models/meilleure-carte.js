@@ -114,6 +114,8 @@ export class MeilleureCarte {
         return mesCartes[mesCartes.length - 1];
     }
 
+    getCarte1() {}
+
     getCartesSeches(mesCartes, atout) {
         return mesCartes.filter(c => c.isSeche(mesCartes, atout) && !c.isAtout(atout));
     }

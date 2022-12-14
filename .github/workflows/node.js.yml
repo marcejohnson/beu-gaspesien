@@ -3,6 +3,10 @@
 
 name: Node.js CI
 
+# Don't treat warnings as errors
+env: 
+  CI: false
+
 on:
   push:
     branches: [ "main" ]

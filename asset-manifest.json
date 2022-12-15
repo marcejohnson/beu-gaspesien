@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/beu-gaspesien/static/css/main.48f4dc99.css",
+    "main.js": "/beu-gaspesien/static/js/main.040ebfb0.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/beu-gaspesien/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/joker.png": "/beu-gaspesien/static/media/joker.1bae890e17af40a5529a.png",
+    "static/media/coeur.png": "/beu-gaspesien/static/media/coeur.59a967e2d634562f8e16.png",
+    "static/media/blanche.png": "/beu-gaspesien/static/media/blanche.f0fe20af464d3d72db71.png",
+    "static/media/carreau.png": "/beu-gaspesien/static/media/carreau.92ecf0ada12698ef588a.png",
+    "static/media/trefle.png": "/beu-gaspesien/static/media/trefle.ed074589ed2d6b4fa3fa.png",
+    "static/media/pique.png": "/beu-gaspesien/static/media/pique.61b1d9a571f5d6e4fb5f.png",
+    "index.html": "/beu-gaspesien/index.html",
+    "main.48f4dc99.css.map": "/beu-gaspesien/static/css/main.48f4dc99.css.map",
+    "main.040ebfb0.js.map": "/beu-gaspesien/static/js/main.040ebfb0.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/beu-gaspesien/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.48f4dc99.css",
+    "static/js/main.040ebfb0.js"
+  ]
+}

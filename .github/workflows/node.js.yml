@@ -30,9 +30,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        working-directory: client
-        run: npm install
-        build: npm run build
-        start: npm start
-        wait-on: 'http://localhost:3000'
+    - name: install dependencies
+      working-directory: client
+      run: npm install
+    - name: start app
+      working-directory: client
+      run: npm start    
         
